@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/emp.png</file>
+        <file>images/lea_1.png</file>
+        <file>images/lea_3R.png</file>
+        <file>images/print.png</file>
+        <file>images/tab_ascii.png</file>
+        <file>images/update.png</file>
+        <file>images/ico.png</file>
+    </qresource>
+</RCC>
