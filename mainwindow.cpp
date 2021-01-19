@@ -9,6 +9,8 @@
 #include <fstream>
 #include "dockread.h"
 #include "ui_dockread.h"
+#include "rowdialog.h"
+#include "ui_rowdialog.h"
 
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
@@ -42,46 +44,146 @@ MainWindow::MainWindow(QWidget *parent) :
     iconWin.addFile(QStringLiteral(":/images/ico.png"), QSize(), QIcon::Normal, QIcon::Off);
     setWindowIcon(iconWin);
 
-    maxRow=70;
-    maxColumn=13;
     myBinaryData=EMP;
     EMP_Table=true;
     setDataHeader();
-    readAsciiData();
-    on_actionAggiorna_triggered();
+
+    setInformation();
+
+    readAsciiFile();
+    writeAsciiTable();
+    writeBinaryFile();
+    readBinaryFile();
+    writeBinarytable();
 }
 
-
-/******************************************************************
- * Legge il file testo non codificato e codifica in file binario  *
- ******************************************************************/
-
-void MainWindow::writeBinaryData()
+void MainWindow::readAsciiTable()
 {
- if(myBinaryData==EMP){
-        maxRow=70;
-        maxColumn=13;
-        EMP_Table=true;
-        binaryfilename="EMPdataBinary.dat";
-    }
+for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
 
-if(myBinaryData==CLASSE_1_1M){
-         maxRow=42;
-         maxColumn=16;
-         EMP_Table=false;
-         binaryfilename="CLASSE_1_1M_dataBinary.dat";
-    }
+     int column=0;
 
-if(myBinaryData==CLASSE_3R){
-          maxRow=38;
-          maxColumn=16;
-          EMP_Table=false;
-          binaryfilename="CLASSE_3R_dataBinary.dat";
+     myLimitData[row].formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
+     column++;
+     myLimitData[row].Wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
+     column++;
+     myLimitData[row].Wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
+     column++;
+     myLimitData[row].Time1=myDockRead->getTableItem(row,column)->text().toDouble();
+     column++;
+     myLimitData[row].Time2=myDockRead->getTableItem(row,column)->text().toDouble();
+     column++;
+     myLimitData[row].C1=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].C2=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].C3=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].C4=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+
+     if(!EMP_Table){
+     myLimitData[row].C5=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].C6=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].C7=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     }
+
+     myLimitData[row].t=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].effects=myDockRead->getTableItem(row,column)->text().toInt();
+     column++;
+     myLimitData[row].formula=myDockRead->getTableItem(row,column)->text().toDouble();
+     column++;
+     myLimitData[row].Sort=myDockRead->getTableItem(row,column)->text().toInt();
     }
+}
+
+void MainWindow::readBinaryTable()
+{
+for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
+
+     int column=0;
+
+     myCodedLimitData[row].formulaNumber=ui->binaryTable->item(row, column)->text().toInt();
+     column++;
+     myCodedLimitData[row].Wavelenght1=ui->binaryTable->item(row,column)->text().toDouble();
+     column++;
+     myCodedLimitData[row].Wavelenght2=ui->binaryTable->item(row,column)->text().toDouble();
+     column++;
+     myCodedLimitData[row].Time1=ui->binaryTable->item(row,column)->text().toDouble();
+     column++;
+     myCodedLimitData[row].Time2=ui->binaryTable->item(row,column)->text().toDouble();
+     column++;
+     myCodedLimitData[row].C1=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].C2=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].C3=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].C4=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+
+     if(!EMP_Table){
+     myCodedLimitData[row].C5=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].C6=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].C7=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     }
+
+     myCodedLimitData[row].t=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].effects=ui->binaryTable->item(row,column)->text().toInt();
+     column++;
+     myCodedLimitData[row].formula=ui->binaryTable->item(row,column)->text().toDouble();
+     column++;
+     myCodedLimitData[row].Sort=ui->binaryTable->item(row,column)->text().toInt();
+    }
+}
+
+void MainWindow::writeAsciiFile()
+{
+// ofstream constructor opens file
+    std::ofstream outVL_DataFile(filename, std::ios::out | std::ofstream::trunc);
+// exit program if unable to create file
+     if ( !outVL_DataFile ) // overloaded ! operator
+     {
+        qDebug() << "Il file non può essere aperto";
+        exit( 1 );
+    } // end if
+
+     QApplication::setOverrideCursor(Qt::WaitCursor);
+
+     for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+       {
+
+       if(EMP_Table){
+          outVL_DataFile << myLimitData[row].formulaNumber << " " << myLimitData[row].Wavelenght1 << " " << myLimitData[row].Wavelenght2 << " " <<
+                       myLimitData[row].Time1 << " " << myLimitData[row].Time2 << " " << myLimitData[row].C1 << " " << myLimitData[row].C2 << " " <<
+                       myLimitData[row].C3 << " " << myLimitData[row].C4 << " " << myLimitData[row].t << " " <<  myLimitData[row].effects << " " <<
+                       myLimitData[row].formula << " " << myLimitData[row].Sort <<" \n";}
+                 else{
+          outVL_DataFile << myLimitData[row].formulaNumber << " " << myLimitData[row].Wavelenght1 << " " << myLimitData[row].Wavelenght2 << " " <<
+                       myLimitData[row].Time1 << " " << myLimitData[row].Time2 << " " << myLimitData[row].C1 << " " << myLimitData[row].C2 << " " <<
+                       myLimitData[row].C3 << " " << myLimitData[row].C4 << " " << myLimitData[row].C5 << " " << myLimitData[row].C6 << " " <<
+                       myLimitData[row].C7 << " " << myLimitData[row].t << " " << myLimitData[row].effects << " " <<
+                       myLimitData[row].formula << " " << myLimitData[row].Sort <<" \n";}
+     }
+}
+/****************************************************************************************
+ * Legge i dati non codificati nela struttura myLimitData[] e codifica in file binario  *
+ ****************************************************************************************/
+
+void MainWindow::writeBinaryFile()
+{
 
  QFile file(QString::fromStdString(binaryfilename));
  if (!file.open(QIODevice::WriteOnly)) {
-     QMessageBox::warning(this, tr("Laser Safety"),
+     QMessageBox::warning(this, tr("VL Table Editor"),
                           tr("Cannot write file %1:\n%2.")
                           .arg(file.fileName())
                           .arg(file.errorString()));
@@ -92,48 +194,7 @@ if(myBinaryData==CLASSE_3R){
 
  QApplication::setOverrideCursor(Qt::WaitCursor);
 
-         for(int row=0; row<maxRow; row++) {
-
-              int column=0;
-
-              myLimitData[row].formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
-              column++;
-              myLimitData[row].Wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
-              column++;
-              myLimitData[row].Wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
-              column++;
-              myLimitData[row].Time1=myDockRead->getTableItem(row,column)->text().toDouble();
-              column++;
-              myLimitData[row].Time2=myDockRead->getTableItem(row,column)->text().toDouble();
-              column++;
-              myLimitData[row].C1=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].C2=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].C3=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].C4=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-
-              if(!EMP_Table){
-              myLimitData[row].C5=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].C6=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].C7=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              }
-
-              myLimitData[row].t=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].effects=myDockRead->getTableItem(row,column)->text().toInt();
-              column++;
-              myLimitData[row].formula=myDockRead->getTableItem(row,column)->text().toDouble();
-              column++;
-              myLimitData[row].Sort=myDockRead->getTableItem(row,column)->text().toInt();
-    }
-
-for(int row=0; row<maxRow; row++) {
+for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
     if(!EMP_Table){
 
               out << myLimitData[row].formulaNumber << myLimitData[row].Wavelenght1 << myLimitData[row].Wavelenght2
@@ -153,44 +214,22 @@ for(int row=0; row<maxRow; row++) {
           QApplication::restoreOverrideCursor();
 }
 
-/**************************
- * Legge il file di testo *
- **************************/
+/*****************************************************
+ * Legge il file di testo  e scrive la tabella ascii *
+ *****************************************************/
 
-void MainWindow::readAsciiData()
+void MainWindow::readAsciiFile()
 {
-    if(myBinaryData==EMP){
-        maxRow=70;
-        maxColumn=13;
-        EMP_Table=true;
-        filename ="EMPdata.dat";
-    }
-    else
-    if(myBinaryData==CLASSE_1_1M){
-
-        maxRow=42;
-        maxColumn=16;
-        EMP_Table=false;
-        filename ="CLASSE_1_1M.dat";
-    }
-    else
-    if(myBinaryData==CLASSE_3R){
-        maxRow=38;
-        maxColumn=16;
-        EMP_Table=false;
-        filename ="CLASSE_3R.dat";
-    }
-
 
 // ifstream constructor opens the file
 std::ifstream inVL_DataFile(filename, std::ios::in );
 
 if ( !inVL_DataFile ) {
-    std::cerr << "File could not be opened\n";
+    qDebug() << "Il file non può essere aperto\n";
        exit( 1 );
 }
 
-for(int row = 0; row<maxRow; row++)
+for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
   {
 
   if(EMP_Table){
@@ -204,10 +243,44 @@ for(int row = 0; row<maxRow; row++)
                   myLimitData[row].C3 >> myLimitData[row].C4 >> myLimitData[row].C5 >> myLimitData[row].C6 >>
                   myLimitData[row].C7 >> myLimitData[row].t >> myLimitData[row].effects >>
                   myLimitData[row].formula >> myLimitData[row].Sort;}
+    }
 }
 
-    for(int row = 0; row<maxRow; row++)
+void MainWindow::readBinaryFile()
 {
+QFile file(QString::fromStdString(binaryfilename));
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("VL Table Editor"),
+        tr("Cannot read file %1:\n%2.")
+            .arg(file.fileName())
+            .arg(file.errorString()));
+       }
+
+       QDataStream in(&file);
+       in.setVersion(QDataStream::Qt_4_3);
+
+        for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+         {
+         if(EMP_Table){
+                in >> myCodedLimitData[row].formulaNumber >> myCodedLimitData[row].Wavelenght1 >> myCodedLimitData[row].Wavelenght2 >>
+                      myCodedLimitData[row].Time1 >> myCodedLimitData[row].Time2 >> myCodedLimitData[row].C1 >> myCodedLimitData[row].C2 >>
+                      myCodedLimitData[row].C3 >> myCodedLimitData[row].C4 >> myCodedLimitData[row].t >> myCodedLimitData[row].effects >>
+                      myCodedLimitData[row].formula >> myCodedLimitData[row].Sort;
+                      }
+         else {
+                in >> myCodedLimitData[row].formulaNumber >> myCodedLimitData[row].Wavelenght1 >> myCodedLimitData[row].Wavelenght2 >>
+                      myCodedLimitData[row].Time1 >> myCodedLimitData[row].Time2 >> myCodedLimitData[row].C1 >> myCodedLimitData[row].C2 >>
+                      myCodedLimitData[row].C3 >> myCodedLimitData[row].C4 >> myCodedLimitData[row].C5 >> myCodedLimitData[row].C6 >>
+                      myCodedLimitData[row].C7 >> myCodedLimitData[row].t >> myCodedLimitData[row].effects >> myCodedLimitData[row].formula >>
+                      myCodedLimitData[row].Sort;
+                      }
+            }
+}
+
+void MainWindow::writeAsciiTable()
+{
+    for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+    {
      int column=0;
 
          QString formulaNumberString=QString::number(myLimitData[row].formulaNumber);
@@ -301,184 +374,108 @@ for(int row = 0; row<maxRow; row++)
 
 }
 
-void MainWindow::on_actionAggiorna_triggered()
+void MainWindow::writeBinarytable()
 {
-   writeBinaryData();
-
-   if(myBinaryData==EMP){
-
-       maxRow=70;
-       maxColumn=13;
-       EMP_Table=true;
-       filename ="EMPdataBinary.dat";
-   }
-
-   if(myBinaryData==CLASSE_1_1M){
-
-       maxRow=42;
-       maxColumn=16;
-       EMP_Table=false;
-       filename ="CLASSE_1_1M_dataBinary.dat";
-   }
-
-   if(myBinaryData==CLASSE_3R){
-
-       maxRow=38;
-       maxColumn=16;
-       EMP_Table=false;
-       filename ="CLASSE_3R_dataBinary.dat";
-   }
-
-QFile file(QString::fromStdString(filename));
-   if (!file.open(QIODevice::ReadOnly)) {
-       QMessageBox::warning(this, tr("Laser Project"),
-                            tr("Cannot read file %1:\n%2.")
-                            .arg(file.fileName())
-                            .arg(file.errorString()));
-   }
-
-   QDataStream in(&file);
-   in.setVersion(QDataStream::Qt_4_3);
-
-QApplication::setOverrideCursor(Qt::WaitCursor);
-
-for(int row = 0; row<maxRow; row++)
- {
- if(EMP_Table){
-        in >> myCodedLimitData[row].formulaNumber >> myCodedLimitData[row].Wavelenght1 >> myCodedLimitData[row].Wavelenght2 >>
-              myCodedLimitData[row].Time1 >> myCodedLimitData[row].Time2 >> myCodedLimitData[row].C1 >> myCodedLimitData[row].C2 >>
-              myCodedLimitData[row].C3 >> myCodedLimitData[row].C4 >> myCodedLimitData[row].t >> myCodedLimitData[row].effects >>
-              myCodedLimitData[row].formula >> myCodedLimitData[row].Sort;
-
-   qDebug()<< myCodedLimitData[row].formulaNumber << myCodedLimitData[row].Wavelenght1 << myCodedLimitData[row].Wavelenght2 <<
-              myCodedLimitData[row].Time1 << myCodedLimitData[row].Time2 << myCodedLimitData[row].C1 << myCodedLimitData[row].C2 <<
-              myCodedLimitData[row].C3 << myCodedLimitData[row].C4 << myCodedLimitData[row].t << myCodedLimitData[row].effects <<
-              myCodedLimitData[row].formula << myCodedLimitData[row].Sort;}
-    else {
-        in >> myCodedLimitData[row].formulaNumber >> myCodedLimitData[row].Wavelenght1 >> myCodedLimitData[row].Wavelenght2 >>
-              myCodedLimitData[row].Time1 >> myCodedLimitData[row].Time2 >> myCodedLimitData[row].C1 >> myCodedLimitData[row].C2 >>
-              myCodedLimitData[row].C3 >> myCodedLimitData[row].C4 >> myCodedLimitData[row].C5 >> myCodedLimitData[row].C6 >>
-              myCodedLimitData[row].C7 >> myCodedLimitData[row].t >> myCodedLimitData[row].effects >> myCodedLimitData[row].formula >>
-              myCodedLimitData[row].Sort;
-
-   qDebug()<< myCodedLimitData[row].formulaNumber << myCodedLimitData[row].Wavelenght1 << myCodedLimitData[row].Wavelenght2 <<
-              myCodedLimitData[row].Time1 << myCodedLimitData[row].Time2 << myCodedLimitData[row].C1 << myCodedLimitData[row].C2 <<
-              myCodedLimitData[row].C3 << myCodedLimitData[row].C4 << myCodedLimitData[row].C5 << myCodedLimitData[row].C6 <<
-              myCodedLimitData[row].C7 << myCodedLimitData[row].t << myCodedLimitData[row].effects << myCodedLimitData[row].formula <<
-              myCodedLimitData[row].Sort;}
-}
-
-for(int row = 0; row<maxRow; row++)
+for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
  {
    int column=0;
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString formulaNumberString=QString::number(myCodedLimitData[row].formulaNumber);
            QTableWidgetItem *item = new QTableWidgetItem(QString(formulaNumberString));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString Wavelength1String=QString::number(myCodedLimitData[row].Wavelenght1);
            item = new QTableWidgetItem(QString(Wavelength1String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString Wavelength2String=QString::number(myCodedLimitData[row].Wavelenght2);
            item = new QTableWidgetItem(QString(Wavelength2String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString Time1String=QString::number(myCodedLimitData[row].Time1);
            item = new QTableWidgetItem(QString(Time1String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString Time2String=QString::number(myCodedLimitData[row].Time2);
            item = new QTableWidgetItem(QString(Time2String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C1String=QString::number(myCodedLimitData[row].C1);
            item = new QTableWidgetItem(QString(C1String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C2String=QString::number(myCodedLimitData[row].C2);
            item = new QTableWidgetItem(QString(C2String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C3String=QString::number(myCodedLimitData[row].C3);
            item = new QTableWidgetItem(QString(C3String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C4String=QString::number(myCodedLimitData[row].C4);
            item = new QTableWidgetItem(QString(C4String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
 if(!EMP_Table){
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C5String=QString::number(myCodedLimitData[row].C5);
            item = new QTableWidgetItem(QString(C5String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C6String=QString::number(myCodedLimitData[row].C6);
            item = new QTableWidgetItem(QString(C6String));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString C7String=QString::number(myCodedLimitData[row].C7);
            item = new QTableWidgetItem(QString(C7String));
            ui->binaryTable->setItem(row,column,item);
            column++;
     }
-
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString tString=QString::number(myCodedLimitData[row].t);
            item = new QTableWidgetItem(QString(tString));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString effectsString=QString::number(myCodedLimitData[row].effects);
            item = new QTableWidgetItem(QString(effectsString));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString formulaString=QString::number(myCodedLimitData[row].formula);
            item = new QTableWidgetItem(QString(formulaString));
            ui->binaryTable->setItem(row,column,item);
            column++;
 
-   qDebug()<< "Scrivo nelle cella..." << "Riga:"<< row << "Colonna "<< column;
            QString SortString=QString::number(myCodedLimitData[row].Sort);
            item = new QTableWidgetItem(QString(SortString));
            ui->binaryTable->setItem(row,column,item);
            column++;
-
-   qDebug()<< "Verifica ondizione su row: ";
           }
+}
 
-QApplication::restoreOverrideCursor();
+
+void MainWindow::on_actionAggiorna_triggered()
+{
+    readAsciiTable();
+    writeAsciiFile();
+    writeAsciiTable();
+    writeBinaryFile();
+    readBinaryFile();
+    writeBinarytable();
 }
 
 void MainWindow::setDataHeader()
 {
-    ui->binaryTable->setRowCount(maxRow);
-        ui->binaryTable->setColumnCount(maxColumn);
+    ui->binaryTable->setRowCount(maxRow[int(myBinaryData)]);
 
     QTableWidgetItem *item = new QTableWidgetItem("N");
     ui->binaryTable->setHorizontalHeaderItem(0,item);
@@ -524,8 +521,11 @@ void MainWindow::setDataHeader()
 
     item = new QTableWidgetItem("");
     myDockRead->setTableHorizontalHeaderItem(13,item);
+    ui->binaryTable->setHorizontalHeaderItem(13,item);
     myDockRead->setTableHorizontalHeaderItem(14,item);
+    ui->binaryTable->setHorizontalHeaderItem(14,item);
     myDockRead->setTableHorizontalHeaderItem(15,item);
+    ui->binaryTable->setHorizontalHeaderItem(15,item);
   }
   else{
     item = new QTableWidgetItem("C1");
@@ -564,75 +564,35 @@ void MainWindow::setDataHeader()
     }
 
 }
-/*
-void MainWindow::on_comboBox_currentIndexChanged(int index)
-{
-    if(index==0){
-        myBinaryData=EMP;
-        maxRow=70;
-        maxColumn=13;
-        EMP_Table=true;
-        }
-            else if(index==1){
-                myBinaryData=CLASSE_1_1M;
-                maxRow=42;
-                maxColumn=16;
-                EMP_Table=false;
-                }
-                    else if(index==2){
-                        myBinaryData=CLASSE_3R;
-                        maxRow=38;
-                        maxColumn=16;
-                        EMP_Table=false;
-                        }
-
-    ui->binaryTable->clear();
-    myDockRead->ui->asciiDataTable->clear();
-    setDataHeader();
-    readAsciiData();
-    on_actionAggiorna_triggered();
-}
-*/
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
 
 void MainWindow::on_actionEMP_toggled(bool arg1)
 {
-    if(arg1)
-    {
-            myBinaryData=EMP;
-            maxRow=70;
-            maxColumn=13;
-            EMP_Table=true;
-            myDockRead->setLabel("EMP");
-            }
-    updateData();
+    if(arg1){
+         myBinaryData=EMP;
+         myDockRead->setLabel("EMP");
+         setInformation();
+         updateData();
+    }
 }
 
 void MainWindow::on_actionLEA_Classi_1_e_1M_toggled(bool arg1)
 {
    if(arg1){
         myBinaryData=CLASSE_1_1M;
-        maxRow=42;
-        maxColumn=16;
-        EMP_Table=false;
         myDockRead->setLabel("LEA Classe 1 e Classe 1M");
-        }
-   updateData();
+        setInformation();
+        updateData();
+   }
 }
 
 void MainWindow::on_actionLEA_Classe_3R_toggled(bool arg1)
 {
     if(arg1){
         myBinaryData=CLASSE_3R;
-        maxRow=38;
-        maxColumn=16;
-        EMP_Table=false;
         myDockRead->setLabel("LEA Classe 3R");
-        }
-    updateData();
+        setInformation();
+        updateData();
+    }
 }
 
 void MainWindow::updateData()
@@ -640,13 +600,39 @@ void MainWindow::updateData()
     ui->binaryTable->clear();
     myDockRead->clearAsciiDataTable();
     setDataHeader();
-    readAsciiData();
-    on_actionAggiorna_triggered();
+
+    readAsciiFile();
+    writeAsciiFile();
+    writeAsciiTable();   
+    writeBinaryFile();
+    readBinaryFile();
+    writeBinarytable();
 }
 
 void MainWindow::on_actionTabella_ASCII_toggled(bool arg1)
 {
    myDockRead->setVisible(arg1);
+}
+
+void MainWindow::setInformation()
+{
+if(myBinaryData==EMP){
+       EMP_Table=true;
+       filename="EMPdata.dat";
+       binaryfilename ="EMPdataBinary.dat";
+   }
+
+if(myBinaryData==CLASSE_1_1M){
+        EMP_Table=false;
+        filename="CLASSE_1_1M.dat";
+        binaryfilename ="CLASSE_1_1M_dataBinary.dat";
+   }
+
+if(myBinaryData==CLASSE_3R){
+        EMP_Table=false;
+        filename="CLASSE_3R.dat";       
+        binaryfilename ="CLASSE_3R_dataBinary.dat";
+   }
 }
 
 void MainWindow::printTables()
@@ -705,7 +691,7 @@ void MainWindow::printTables()
                         "<td>tipo</td></td></tr>\n";
             }
 
-    for(int row = 0; row<maxRow; row++)
+    for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
      {
 
     QString formulaNumberString=QString::number(myLimitData[row].formulaNumber);
@@ -800,7 +786,7 @@ void MainWindow::printTables()
                         "<td>tipo</td></td></tr>\n";
             }
 
-    for(int row = 0; row<maxRow; row++)
+    for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
      {
 
         QString formulaNumberString=QString::number(myCodedLimitData[row].formulaNumber);
@@ -890,4 +876,35 @@ void MainWindow::on_actionStampa_triggered()
 void MainWindow::on_actionInformazioni_su_Qt_triggered()
 {
     qApp->aboutQt();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_actionNumero_di_righe_triggered()
+{
+    RowDialog dialog(this, maxRow);
+    dialog.exec();
+    if(dialog.result()==QDialog::Accepted)
+     {
+        maxRow[0]=dialog.getMaxRowArray()[0];
+        maxRow[1]=dialog.getMaxRowArray()[1];
+        maxRow[2]=dialog.getMaxRowArray()[2];
+        qDebug()<<"il valore deferenziato del puntatore" << maxRow[0];
+
+        for(int i=0; i<3; i++){
+            qDebug()<< "maxRow[" << maxRow[i]<< "]";}
+
+     }
+}
+
+void MainWindow::on_actionInformazioni_triggered()
+{
+    QMessageBox::about(this, tr("Informazioni su Laser Studio"),
+            tr("<h2>VL Table Editor</h2>"
+               "<p>Applicazione per compilazione in file <br>"
+               " binari delle Tabelle EMP e LEA.</p>"
+               "<p>Autore: Ing. Carmine Giordano</p>"));
 }

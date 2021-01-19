@@ -21,6 +21,12 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0" colspan="2">
      <widget class="QTableWidget" name="binaryTable">
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>
@@ -40,7 +46,7 @@
        <number>100</number>
       </property>
       <property name="columnCount">
-       <number>20</number>
+       <number>16</number>
       </property>
       <row/>
       <row/>
@@ -142,10 +148,6 @@
       <row/>
       <row/>
       <row/>
-      <column/>
-      <column/>
-      <column/>
-      <column/>
       <column/>
       <column/>
       <column/>
@@ -189,6 +191,7 @@
     </widget>
     <addaction name="menutabella"/>
     <addaction name="actionAggiorna"/>
+    <addaction name="actionNumero_di_righe"/>
    </widget>
    <widget class="QMenu" name="menuVisualizza">
     <property name="title">
@@ -206,6 +209,7 @@
     <property name="title">
      <string>Aiuto</string>
     </property>
+    <addaction name="actionInformazioni"/>
     <addaction name="actionInformazioni_su_Qt"/>
    </widget>
    <addaction name="menuStampa"/>
@@ -312,6 +316,19 @@
    </property>
    <property name="toolTip">
     <string>Informazioni su Qt</string>
+   </property>
+  </action>
+  <action name="actionNumero_di_righe">
+   <property name="text">
+    <string>Imposta numero di righe</string>
+   </property>
+  </action>
+  <action name="actionInformazioni">
+   <property name="text">
+    <string>Informazioni</string>
+   </property>
+   <property name="toolTip">
+    <string>Informazioni sull'applicativo</string>
    </property>
   </action>
  </widget>

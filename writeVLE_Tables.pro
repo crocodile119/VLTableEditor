@@ -26,16 +26,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         dockread.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        rowdialog.cpp
 
 HEADERS  += \
     dockread.h \
     limitdata.h \
-    mainwindow.h
+    mainwindow.h \
+    rowdialog.h
 
 FORMS    += \
     dockread.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    rowdialog.ui
 
 RESOURCES += \
     writeVLE_Tables.qrc
