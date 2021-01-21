@@ -43,4 +43,5 @@ FORMS    += \
 RESOURCES += \
     writeVLE_Tables.qrc
 
-DISTFILES +=
+DISTFILES += \
+    images/lea_3B.png

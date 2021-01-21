@@ -57,13 +57,15 @@ private slots:
     void on_actionNumero_di_righe_triggered();
     void on_actionInformazioni_triggered();
 
+    void on_actionLEA_Classe_3B_toggled(bool arg1);
+
 private:
     Ui::MainWindow *ui;
     double wavelength;
     double time;
-    enum binaryData{EMP, CLASSE_1_1M, CLASSE_3R};
+    enum binaryData{EMP, CLASSE_1_1M, CLASSE_3R, CLASSE_3B};
     binaryData myBinaryData;
-    int maxRow[3]={70, 42, 38};
+    int maxRow[4]={70, 42, 38, 21};
     bool EMP_Table;
     QString html;
     limitdata myLimitData[70];

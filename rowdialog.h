@@ -23,7 +23,7 @@ private slots:
 
 private:
     Ui::RowDialog *ui;
-    int myMaxRow[];
+    int *myMaxRow;
 };
 
 #endif // ROWDIALOG_H

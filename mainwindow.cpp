@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     tableGroup->addAction(ui->actionEMP);
     tableGroup->addAction(ui->actionLEA_Classi_1_e_1M);
     tableGroup->addAction(ui->actionLEA_Classe_3R);
+    tableGroup->addAction(ui->actionLEA_Classe_3B);
 
     QIcon iconWin;
     iconWin.addFile(QStringLiteral(":/images/ico.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -595,6 +596,16 @@ void MainWindow::on_actionLEA_Classe_3R_toggled(bool arg1)
     }
 }
 
+void MainWindow::on_actionLEA_Classe_3B_toggled(bool arg1)
+{
+    if(arg1){
+        myBinaryData=CLASSE_3B;
+        myDockRead->setLabel("LEA Classe 3B");
+        setInformation();
+        updateData();
+    }
+}
+
 void MainWindow::updateData()
 {
     ui->binaryTable->clear();
@@ -622,16 +633,22 @@ if(myBinaryData==EMP){
        binaryfilename ="EMPdataBinary.dat";
    }
 
-if(myBinaryData==CLASSE_1_1M){
+else if(myBinaryData==CLASSE_1_1M){
         EMP_Table=false;
         filename="CLASSE_1_1M.dat";
         binaryfilename ="CLASSE_1_1M_dataBinary.dat";
    }
 
-if(myBinaryData==CLASSE_3R){
+else if(myBinaryData==CLASSE_3R){
         EMP_Table=false;
         filename="CLASSE_3R.dat";       
         binaryfilename ="CLASSE_3R_dataBinary.dat";
+   }
+
+else if(myBinaryData==CLASSE_3B){
+        EMP_Table=false;
+        filename="CLASSE_3B.dat";
+        binaryfilename ="CLASSE_3B_dataBinary.dat";
    }
 }
 
@@ -889,14 +906,10 @@ void MainWindow::on_actionNumero_di_righe_triggered()
     dialog.exec();
     if(dialog.result()==QDialog::Accepted)
      {
-        maxRow[0]=dialog.getMaxRowArray()[0];
-        maxRow[1]=dialog.getMaxRowArray()[1];
-        maxRow[2]=dialog.getMaxRowArray()[2];
-        qDebug()<<"il valore deferenziato del puntatore" << maxRow[0];
+      for(int row=0; row<maxRow[int(myBinaryData)]; row++)
+        maxRow[row]=dialog.getMaxRowArray()[row];
 
-        for(int i=0; i<3; i++){
-            qDebug()<< "maxRow[" << maxRow[i]<< "]";}
-
+       updateData();
      }
 }
 

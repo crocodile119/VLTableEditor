@@ -8,7 +8,8 @@ RowDialog::RowDialog(QWidget *parent, int *maxRow) :
 {
     ui->setupUi(this);
 
-    for(int i=0; i<3; i++){
+    myMaxRow=new int[4];
+    for(int i=0; i<4; i++){
         myMaxRow[i]=maxRow[i];
 
     qDebug()<< "maxRow[" << myMaxRow[i]<< "]";}
@@ -16,6 +17,7 @@ RowDialog::RowDialog(QWidget *parent, int *maxRow) :
     ui->empSpinBox->setValue(myMaxRow[0]);
     ui->lea_1_1M_SpinBox->setValue(myMaxRow[1]);
     ui->lea_3R_SpinBox->setValue(myMaxRow[2]);
+    ui->lea_3B_SpinBox->setValue(myMaxRow[3]);
 }
 
 RowDialog::~RowDialog()
@@ -40,9 +42,8 @@ void RowDialog::on_lea_3R_SpinBox_valueChanged(int arg1)
 
 int* RowDialog::getMaxRowArray()
 {
-    for(int i=0; i<3; i++){
+    for(int i=0; i<4; i++){
         qDebug()<< myMaxRow[i]<< "l'Array in getMaxRowArray";}
 
     return myMaxRow;
-
 }

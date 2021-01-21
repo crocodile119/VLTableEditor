@@ -188,6 +188,7 @@
      <addaction name="actionEMP"/>
      <addaction name="actionLEA_Classi_1_e_1M"/>
      <addaction name="actionLEA_Classe_3R"/>
+     <addaction name="actionLEA_Classe_3B"/>
     </widget>
     <addaction name="menutabella"/>
     <addaction name="actionAggiorna"/>
@@ -231,6 +232,7 @@
    <addaction name="actionEMP"/>
    <addaction name="actionLEA_Classi_1_e_1M"/>
    <addaction name="actionLEA_Classe_3R"/>
+   <addaction name="actionLEA_Classe_3B"/>
    <addaction name="actionAggiorna"/>
    <addaction name="actionTabella_ASCII"/>
    <addaction name="actionStampa"/>
@@ -329,6 +331,18 @@
    </property>
    <property name="toolTip">
     <string>Informazioni sull'applicativo</string>
+   </property>
+  </action>
+  <action name="actionLEA_Classe_3B">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/lea_3B.png</normaloff>:/images/lea_3B.png</iconset>
+   </property>
+   <property name="text">
+    <string>LEA Classe 3B</string>
    </property>
   </action>
  </widget>
