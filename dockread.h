@@ -4,6 +4,13 @@
 #include <QDockWidget>
 #include <QTableWidgetItem>
 
+#if defined(QT_PRINTSUPPORT_LIB)
+#include <QtPrintSupport/qtprintsupportglobal.h>
+#endif
+
+#include <QPrinter>
+#include <QPrintDialog>
+
 namespace Ui {
 class DockRead;
 }

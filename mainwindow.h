@@ -4,7 +4,10 @@
 #include <QtWidgets>
 #include <QMainWindow>
 #include <string>
-#include "limitdata.h"
+#include "empdata.h"
+#include "leadata.h"
+#include "computeemp.h"
+#include "computelea.h"
 #include "dockread.h"
 
 #if defined(QT_PRINTSUPPORT_LIB)
@@ -43,8 +46,6 @@ public:
     void setDataHeader();
     void updateData();
     void printTables();
-    void printReport(QPrinter *printer);
-
 
 private slots:
     void on_actionAggiorna_triggered();
@@ -57,6 +58,17 @@ private slots:
     void on_actionNumero_di_righe_triggered();
     void on_actionInformazioni_triggered();
     void on_actionLEA_Classe_3B_toggled(bool arg1);
+    void on_actionLea_3R_60825_1_triggered();
+
+    void on_actiontabella_Lea_1_e_1M_triggered();
+    void on_actionLea_3B_60825_1_triggered();
+    void on_actionTabella_2_2_triggered();
+    void on_actionTabella_2_3_triggered();
+    void on_actionStampa_tabelleCompilate_triggered();
+
+    void on_actionSalva_fiel_binario_triggered();
+
+    QString adjustHeader();
 
 private:
     Ui::MainWindow *ui;
@@ -67,8 +79,12 @@ private:
     int maxRow[4]={70, 41, 38, 21};
     bool EMP_Table;
     QString html;
-    limitdata myLimitData[70];
-    limitdata myCodedLimitData[70];
+    leadata myLeaData[70];
+    empdata myEmpData[70];
+    leadata myCodedLeaData[70];
+    empdata myCodedEmpData[70];
+    ComputeLEA myLEA_Print;
+    ComputeEMP myEMP_Print;
 
     std::string filename;
     std::string binaryfilename;

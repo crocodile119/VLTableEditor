@@ -199,12 +199,25 @@
      <string>Visualizza</string>
     </property>
     <addaction name="actionTabella_ASCII"/>
+    <addaction name="actionTabella_2_2"/>
+    <addaction name="actionTabella_2_3"/>
+    <addaction name="actiontabella_Lea_1_e_1M"/>
+    <addaction name="actionLea_3R_60825_1"/>
+    <addaction name="actionLea_3B_60825_1"/>
    </widget>
    <widget class="QMenu" name="menuStampa">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionStampa"/>
+    <widget class="QMenu" name="menuEsporta">
+     <property name="title">
+      <string>Esporta</string>
+     </property>
+     <addaction name="actionStampa"/>
+     <addaction name="actionStampa_tabelleCompilate"/>
+    </widget>
+    <addaction name="actionSalva_fiel_binario"/>
+    <addaction name="menuEsporta"/>
    </widget>
    <widget class="QMenu" name="menuAiuto">
     <property name="title">
@@ -235,7 +248,11 @@
    <addaction name="actionLEA_Classe_3B"/>
    <addaction name="actionAggiorna"/>
    <addaction name="actionTabella_ASCII"/>
-   <addaction name="actionStampa"/>
+   <addaction name="actiontabella_Lea_1_e_1M"/>
+   <addaction name="actionLea_3R_60825_1"/>
+   <addaction name="actionLea_3B_60825_1"/>
+   <addaction name="actionTabella_2_2"/>
+   <addaction name="actionTabella_2_3"/>
   </widget>
   <action name="actionEMP">
    <property name="checkable">
@@ -304,12 +321,8 @@
    </property>
   </action>
   <action name="actionStampa">
-   <property name="icon">
-    <iconset resource="writeVLE_Tables.qrc">
-     <normaloff>:/images/print.png</normaloff>:/images/print.png</iconset>
-   </property>
    <property name="text">
-    <string>Stampa</string>
+    <string>Tabelle RAW</string>
    </property>
   </action>
   <action name="actionInformazioni_su_Qt">
@@ -343,6 +356,65 @@
    </property>
    <property name="text">
     <string>LEA Classe 3B</string>
+   </property>
+  </action>
+  <action name="actiontabella_Lea_1_e_1M">
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/lea_1_image.png</normaloff>:/images/lea_1_image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lea 1 e 1M 60825-1</string>
+   </property>
+  </action>
+  <action name="actionLea_3R_60825_1">
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/lea_3R_image.png</normaloff>:/images/lea_3R_image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lea 3R 60825-1</string>
+   </property>
+  </action>
+  <action name="actionLea_3B_60825_1">
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/lea_3B_image.png</normaloff>:/images/lea_3B_image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lea 3B 60825-1</string>
+   </property>
+  </action>
+  <action name="actionTabella_2_2">
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/tabella22_image.png</normaloff>:/images/tabella22_image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Tabella 2.2</string>
+   </property>
+  </action>
+  <action name="actionTabella_2_3">
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/tabella23_image.png</normaloff>:/images/tabella23_image.png</iconset>
+   </property>
+   <property name="text">
+    <string>Tabella 2.3</string>
+   </property>
+  </action>
+  <action name="actionStampa_tabelleCompilate">
+   <property name="text">
+    <string>Tabelle compilate</string>
+   </property>
+  </action>
+  <action name="actionSalva_fiel_binario">
+   <property name="icon">
+    <iconset resource="writeVLE_Tables.qrc">
+     <normaloff>:/images/save.png</normaloff>:/images/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Salva fiel binario</string>
    </property>
   </action>
  </widget>

@@ -8,5 +8,20 @@
         <file>images/update.png</file>
         <file>images/ico.png</file>
         <file>images/lea_3B.png</file>
+        <file>images/EN_Table_1M.png</file>
+        <file>images/EN_Table_3B.png</file>
+        <file>images/EN_Table_3R.png</file>
+        <file>images/Table_22.png</file>
+        <file>images/Table_23.png</file>
+        <file>CLASSE_1_1M_dataBinary.dat</file>
+        <file>CLASSE_3B_dataBinary.dat</file>
+        <file>CLASSE_3R_dataBinary.dat</file>
+        <file>EMPdataBinary.dat</file>
+        <file>images/save.png</file>
+        <file>images/lea_1_image.png</file>
+        <file>images/lea_3B_image.png</file>
+        <file>images/lea_3R_image.png</file>
+        <file>images/tabella22_image.png</file>
+        <file>images/tabella23_image.png</file>
     </qresource>
 </RCC>

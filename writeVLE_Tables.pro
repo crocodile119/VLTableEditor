@@ -25,23 +25,46 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
+        computeemp.cpp \
+        computelea.cpp \
         dockread.cpp \
+        empleatables.cpp \
         mainwindow.cpp \
-        rowdialog.cpp
+        rowdialog.cpp \
+        table1mdialog.cpp \
+        table22dialog.cpp \
+        table23dialog.cpp \
+        table3bdialog.cpp \
+        table3rdialog.cpp \
+        tablescontroller.cpp
 
 HEADERS  += \
+    computeemp.h \
+    computelea.h \
     dockread.h \
-    limitdata.h \
+    empdata.h \
+    empleatables.h \
+    leadata.h \
     mainwindow.h \
-    rowdialog.h
+    rowdialog.h \
+    table1mdialog.h \
+    table22dialog.h \
+    table23dialog.h \
+    table3bdialog.h \
+    table3rdialog.h \
+    tablescontroller.h
 
 FORMS    += \
     dockread.ui \
     mainwindow.ui \
-    rowdialog.ui
+    rowdialog.ui \
+    table1mdialog.ui \
+    table22dialog.ui \
+    table23dialog.ui \
+    table3bdialog.ui \
+    table3rdialog.ui
 
 RESOURCES += \
     writeVLE_Tables.qrc
 
-DISTFILES += \
-    images/lea_3B.png
+DISTFILES +=
