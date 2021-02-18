@@ -13,7 +13,6 @@ class ComputeEMP
 {
 public:
     ComputeEMP();
-    ~ComputeEMP();
 	string getRadiation() const;
 	string getSkinDamage() const;
     string getEyeDamage() const;
@@ -30,9 +29,7 @@ public:
     void writeEmpInStructValues();
 
 private:
-    empdata* empStructValues;
-
-    EmpLeaTables* leaTables;
+    std::array<empdata, EmpLeaTables::TABLEROW_EMP> empStructValues;
 
     double EMP_Result;
     string EMP_Formula;

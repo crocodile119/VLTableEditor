@@ -25,7 +25,7 @@ struct leadata {
     int effects;
     double formula;
     int sort;
-    };
+};
 
 enum classData{CLASSE_1_1M, CLASSE_2_1M, CLASSE_3R, CLASSE_3B};
 

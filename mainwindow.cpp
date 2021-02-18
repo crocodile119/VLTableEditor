@@ -39,7 +39,7 @@ using std::ifstream;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),wavelength(633), time(0.25), myLeaData{}, myEmpData{}, myCodedLeaData{}, myCodedEmpData{}
 {
     myDockRead= new DockRead();
     addDockWidget(Qt::TopDockWidgetArea, this->myDockRead);
@@ -63,10 +63,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setInformation();
 
-    QPixmap EN_1M_Table=QPixmap(":/images/EN_Table_1M.png", "png");
-    QPixmap EN_3R_Table=QPixmap(":/images/EN_Table_3R.png", "png");
-    QPixmap EN_3B_Table=QPixmap(":/images/EN_Table_3B.png", "png");
-
     readAsciiFile();
     writeAsciiTable();
     writeBinaryFile();
@@ -76,138 +72,138 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::readAsciiTable()
 {
-for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
+for(int row=0; row<maxRow.at((int)myBinaryData); row++) {
     int column=0;
 
     if(myBinaryData==EMP)
 {
-    myEmpData[row].formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
+    myEmpData.at(row).formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
     column++;
-    myEmpData[row].wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
+    myEmpData.at(row).wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myEmpData[row].wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
+    myEmpData.at(row).wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myEmpData[row].time1=myDockRead->getTableItem(row,column)->text().toDouble();
+    myEmpData.at(row).time1=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myEmpData[row].time2=myDockRead->getTableItem(row,column)->text().toDouble();
+    myEmpData.at(row).time2=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myEmpData[row].CA=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).CA=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myEmpData[row].CB=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).CB=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myEmpData[row].CC=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).CC=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myEmpData[row].CE=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).CE=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myEmpData[row].t=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).t=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myEmpData[row].effects=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).effects=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myEmpData[row].formula=myDockRead->getTableItem(row,column)->text().toDouble();
+    myEmpData.at(row).formula=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myEmpData[row].sort=myDockRead->getTableItem(row,column)->text().toInt();
+    myEmpData.at(row).sort=myDockRead->getTableItem(row,column)->text().toInt();
     }
     else
     {
-     myLeaData[row].formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
+     myLeaData.at(row).formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
      column++;
-     myLeaData[row].wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
+     myLeaData.at(row).wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
      column++;
-     myLeaData[row].wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
+     myLeaData.at(row).wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
      column++;
-     myLeaData[row].time1=myDockRead->getTableItem(row,column)->text().toDouble();
+     myLeaData.at(row).time1=myDockRead->getTableItem(row,column)->text().toDouble();
      column++;
-     myLeaData[row].time2=myDockRead->getTableItem(row,column)->text().toDouble();
+     myLeaData.at(row).time2=myDockRead->getTableItem(row,column)->text().toDouble();
      column++;
-     myLeaData[row].C1=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C1=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].C2=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C2=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].C3=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C3=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].C4=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C4=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].C5=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C5=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].C6=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C6=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].C7=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).C7=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].t=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).t=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].effects=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).effects=myDockRead->getTableItem(row,column)->text().toInt();
      column++;
-     myLeaData[row].formula=myDockRead->getTableItem(row,column)->text().toDouble();
+     myLeaData.at(row).formula=myDockRead->getTableItem(row,column)->text().toDouble();
      column++;
-     myLeaData[row].sort=myDockRead->getTableItem(row,column)->text().toInt();
+     myLeaData.at(row).sort=myDockRead->getTableItem(row,column)->text().toInt();
     }
     }
 }
 void MainWindow::readBinaryTable()
 {
-for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
+for(int row=0; row<maxRow.at((int)myBinaryData); row++) {
   int column=0;
     if(myBinaryData==EMP)
 {
-    myCodedEmpData[row].formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
+    myCodedEmpData.at(row).formulaNumber=myDockRead->getTableItem(row, column)->text().toInt();
     column++;
-    myCodedEmpData[row].wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
+    myCodedEmpData.at(row).wavelenght1=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myCodedEmpData[row].wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
+    myCodedEmpData.at(row).wavelenght2=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myCodedEmpData[row].time1=myDockRead->getTableItem(row,column)->text().toDouble();
+    myCodedEmpData.at(row).time1=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myCodedEmpData[row].time2=myDockRead->getTableItem(row,column)->text().toDouble();
+    myCodedEmpData.at(row).time2=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myCodedEmpData[row].CA=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).CA=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myCodedEmpData[row].CB=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).CB=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myCodedEmpData[row].CC=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).CC=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myCodedEmpData[row].CE=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).CE=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myCodedEmpData[row].t=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).t=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myCodedEmpData[row].effects=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).effects=myDockRead->getTableItem(row,column)->text().toInt();
     column++;
-    myCodedEmpData[row].formula=myDockRead->getTableItem(row,column)->text().toDouble();
+    myCodedEmpData.at(row).formula=myDockRead->getTableItem(row,column)->text().toDouble();
     column++;
-    myCodedEmpData[row].sort=myDockRead->getTableItem(row,column)->text().toInt();
+    myCodedEmpData.at(row).sort=myDockRead->getTableItem(row,column)->text().toInt();
     }
     else
     {
-     myCodedLeaData[row].formulaNumber=ui->binaryTable->item(row, column)->text().toInt();
+     myCodedLeaData.at(row).formulaNumber=ui->binaryTable->item(row, column)->text().toInt();
      column++;
-     myCodedLeaData[row].wavelenght1=ui->binaryTable->item(row,column)->text().toDouble();
+     myCodedLeaData.at(row).wavelenght1=ui->binaryTable->item(row,column)->text().toDouble();
      column++;
-     myCodedLeaData[row].wavelenght2=ui->binaryTable->item(row,column)->text().toDouble();
+     myCodedLeaData.at(row).wavelenght2=ui->binaryTable->item(row,column)->text().toDouble();
      column++;
-     myCodedLeaData[row].time1=ui->binaryTable->item(row,column)->text().toDouble();
+     myCodedLeaData.at(row).time1=ui->binaryTable->item(row,column)->text().toDouble();
      column++;
-     myCodedLeaData[row].time2=ui->binaryTable->item(row,column)->text().toDouble();
+     myCodedLeaData.at(row).time2=ui->binaryTable->item(row,column)->text().toDouble();
      column++;
-     myCodedLeaData[row].C1=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C1=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].C2=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C2=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].C3=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C3=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].C4=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C4=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].C5=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C5=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].C6=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C6=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].C7=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).C7=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].t=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).t=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].effects=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).effects=ui->binaryTable->item(row,column)->text().toInt();
      column++;
-     myCodedLeaData[row].formula=ui->binaryTable->item(row,column)->text().toDouble();
+     myCodedLeaData.at(row).formula=ui->binaryTable->item(row,column)->text().toDouble();
      column++;
-     myCodedLeaData[row].sort=ui->binaryTable->item(row,column)->text().toInt();
+     myCodedLeaData.at(row).sort=ui->binaryTable->item(row,column)->text().toInt();
     }
 }
 }
@@ -225,20 +221,20 @@ void MainWindow::writeAsciiFile()
 
      QApplication::setOverrideCursor(Qt::WaitCursor);
 
-     for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+     for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
        {
 
        if(EMP_Table){
-          outVL_DataFile << myEmpData[row].formulaNumber << " " << myEmpData[row].wavelenght1 << " " << myEmpData[row].wavelenght2 << " " <<
-                       myEmpData[row].time1 << " " << myEmpData[row].time2 << " " << myEmpData[row].CA << " " << myEmpData[row].CB << " " <<
-                       myEmpData[row].CC << " " << myEmpData[row].CE << " " << myEmpData[row].t << " " <<  myEmpData[row].effects << " " <<
-                       myEmpData[row].formula << " " << myEmpData[row].sort <<" \n";}
-                 else{
-          outVL_DataFile << myLeaData[row].formulaNumber << " " << myLeaData[row].wavelenght1 << " " << myLeaData[row].wavelenght2 << " " <<
-                       myLeaData[row].time1 << " " << myLeaData[row].time2 << " " << myLeaData[row].C1 << " " << myLeaData[row].C2 << " " <<
-                       myLeaData[row].C3 << " " << myLeaData[row].C4 << " " << myLeaData[row].C5 << " " << myLeaData[row].C6 << " " <<
-                       myLeaData[row].C7 << " " << myLeaData[row].t << " " << myLeaData[row].effects << " " <<
-                       myLeaData[row].formula << " " << myLeaData[row].sort <<" \n";}
+          outVL_DataFile << myEmpData.at(row).formulaNumber << " " << myEmpData.at(row).wavelenght1 << " " << myEmpData.at(row).wavelenght2 << " " <<
+                       myEmpData.at(row).time1 << " " << myEmpData.at(row).time2 << " " << myEmpData.at(row).CA << " " << myEmpData.at(row).CB << " " <<
+                       myEmpData.at(row).CC << " " << myEmpData.at(row).CE << " " << myEmpData.at(row).t << " " <<  myEmpData.at(row).effects << " " <<
+                       myEmpData.at(row).formula << " " << myEmpData.at(row).sort <<" \n";}
+       else{
+          outVL_DataFile << myLeaData.at(row).formulaNumber << " " << myLeaData.at(row).wavelenght1 << " " << myLeaData.at(row).wavelenght2 << " " <<
+                       myLeaData.at(row).time1 << " " << myLeaData.at(row).time2 << " " << myLeaData.at(row).C1 << " " << myLeaData.at(row).C2 << " " <<
+                       myLeaData.at(row).C3 << " " << myLeaData.at(row).C4 << " " << myLeaData.at(row).C5 << " " << myLeaData.at(row).C6 << " " <<
+                       myLeaData.at(row).C7 << " " << myLeaData.at(row).t << " " << myLeaData.at(row).effects << " " <<
+                       myLeaData.at(row).formula << " " << myLeaData.at(row).sort <<" \n";}
      }
 }
 /****************************************************************************************
@@ -261,20 +257,20 @@ void MainWindow::writeBinaryFile()
 
  QApplication::setOverrideCursor(Qt::WaitCursor);
 
-for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
+for(int row=0; row<maxRow.at((int)myBinaryData); row++) {
     if(EMP_Table){
-        out << myEmpData[row].formulaNumber << myEmpData[row].wavelenght1 << myEmpData[row].wavelenght2
-            << myEmpData[row].time1 << myEmpData[row].time2 << myEmpData[row].CA << myEmpData[row].CB
-            << myEmpData[row].CC << myEmpData[row].CE << myEmpData[row].t << myEmpData[row].effects
-            << myEmpData[row].formula << myEmpData[row].sort;
+        out << myEmpData.at(row).formulaNumber << myEmpData.at(row).wavelenght1 << myEmpData.at(row).wavelenght2
+            << myEmpData.at(row).time1 << myEmpData.at(row).time2 << myEmpData.at(row).CA << myEmpData.at(row).CB
+            << myEmpData.at(row).CC << myEmpData.at(row).CE << myEmpData.at(row).t << myEmpData.at(row).effects
+            << myEmpData.at(row).formula << myEmpData.at(row).sort;
             }
     else
     {    
-        out << myLeaData[row].formulaNumber << myLeaData[row].wavelenght1 << myLeaData[row].wavelenght2
-            << myLeaData[row].time1 << myLeaData[row].time2 << myLeaData[row].C1 << myLeaData[row].C2
-            << myLeaData[row].C3 << myLeaData[row].C4 << myLeaData[row].C5 << myLeaData[row].C6
-            << myLeaData[row].C7 << myLeaData[row].t << myLeaData[row].effects << myLeaData[row].formula
-            << myLeaData[row].sort;
+        out << myLeaData.at(row).formulaNumber << myLeaData.at(row).wavelenght1 << myLeaData.at(row).wavelenght2
+            << myLeaData.at(row).time1 << myLeaData.at(row).time2 << myLeaData.at(row).C1 << myLeaData.at(row).C2
+            << myLeaData.at(row).C3 << myLeaData.at(row).C4 << myLeaData.at(row).C5 << myLeaData.at(row).C6
+            << myLeaData.at(row).C7 << myLeaData.at(row).t << myLeaData.at(row).effects << myLeaData.at(row).formula
+            << myLeaData.at(row).sort;
            }
    }
           QApplication::restoreOverrideCursor();
@@ -295,20 +291,20 @@ if ( !inVL_DataFile ) {
        exit( 1 );
 }
 
-for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
   {
 
   if(EMP_Table){
-     inVL_DataFile >> myEmpData[row].formulaNumber >> myEmpData[row].wavelenght1 >> myEmpData[row].wavelenght2 >>
-                  myEmpData[row].time1 >> myEmpData[row].time2 >> myEmpData[row].CA >> myEmpData[row].CB >>
-                  myEmpData[row].CC >> myEmpData[row].CE >> myEmpData[row].t >> myEmpData[row].effects >>
-                  myEmpData[row].formula >> myEmpData[row].sort;}
-            else{
-     inVL_DataFile >> myLeaData[row].formulaNumber >> myLeaData[row].wavelenght1 >> myLeaData[row].wavelenght2 >>
-                  myLeaData[row].time1 >> myLeaData[row].time2 >> myLeaData[row].C1 >> myLeaData[row].C2 >>
-                  myLeaData[row].C3 >> myLeaData[row].C4 >> myLeaData[row].C5 >> myLeaData[row].C6 >>
-                  myLeaData[row].C7 >> myLeaData[row].t >> myLeaData[row].effects >>
-                  myLeaData[row].formula >> myLeaData[row].sort;}
+     inVL_DataFile >> myEmpData.at(row).formulaNumber >> myEmpData.at(row).wavelenght1 >> myEmpData.at(row).wavelenght2 >>
+                  myEmpData.at(row).time1 >> myEmpData.at(row).time2 >> myEmpData.at(row).CA >> myEmpData.at(row).CB >>
+                  myEmpData.at(row).CC >> myEmpData.at(row).CE >> myEmpData.at(row).t >> myEmpData.at(row).effects >>
+                  myEmpData.at(row).formula >> myEmpData.at(row).sort;}
+  else{
+     inVL_DataFile >> myLeaData.at(row).formulaNumber >> myLeaData.at(row).wavelenght1 >> myLeaData.at(row).wavelenght2 >>
+                  myLeaData.at(row).time1 >> myLeaData.at(row).time2 >> myLeaData.at(row).C1 >> myLeaData.at(row).C2 >>
+                  myLeaData.at(row).C3 >> myLeaData.at(row).C4 >> myLeaData.at(row).C5 >> myLeaData.at(row).C6 >>
+                  myLeaData.at(row).C7 >> myLeaData.at(row).t >> myLeaData.at(row).effects >>
+                  myLeaData.at(row).formula >> myLeaData.at(row).sort;}
     }
 }
 
@@ -325,176 +321,147 @@ QFile file(QString::fromStdString(binaryfilename));
        QDataStream in(&file);
        in.setVersion(QDataStream::Qt_4_3);
 
-        for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+        for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
          {
          if(EMP_Table){
-                in >> myCodedEmpData[row].formulaNumber >> myCodedEmpData[row].wavelenght1 >> myCodedEmpData[row].wavelenght2 >>
-                      myCodedEmpData[row].time1 >> myCodedEmpData[row].time2 >> myCodedEmpData[row].CA >> myCodedEmpData[row].CB >>
-                      myCodedEmpData[row].CC >> myCodedEmpData[row].CE >> myCodedEmpData[row].t >> myCodedEmpData[row].effects >>
-                      myCodedEmpData[row].formula >> myCodedEmpData[row].sort;
+                in >> myCodedEmpData.at(row).formulaNumber >> myCodedEmpData.at(row).wavelenght1 >> myCodedEmpData.at(row).wavelenght2 >>
+                      myCodedEmpData.at(row).time1 >> myCodedEmpData.at(row).time2 >> myCodedEmpData.at(row).CA >> myCodedEmpData.at(row).CB >>
+                      myCodedEmpData.at(row).CC >> myCodedEmpData.at(row).CE >> myCodedEmpData.at(row).t >> myCodedEmpData.at(row).effects >>
+                      myCodedEmpData.at(row).formula >> myCodedEmpData.at(row).sort;
                       }
          else {
-                in >> myCodedLeaData[row].formulaNumber >> myCodedLeaData[row].wavelenght1 >> myCodedLeaData[row].wavelenght2 >>
-                      myCodedLeaData[row].time1 >> myCodedLeaData[row].time2 >> myCodedLeaData[row].C1 >> myCodedLeaData[row].C2 >>
-                      myCodedLeaData[row].C3 >> myCodedLeaData[row].C4 >> myCodedLeaData[row].C5 >> myCodedLeaData[row].C6 >>
-                      myCodedLeaData[row].C7 >> myCodedLeaData[row].t >> myCodedLeaData[row].effects >> myCodedLeaData[row].formula >>
-                      myCodedLeaData[row].sort;
+                in >> myCodedLeaData.at(row).formulaNumber >> myCodedLeaData.at(row).wavelenght1 >> myCodedLeaData.at(row).wavelenght2 >>
+                      myCodedLeaData.at(row).time1 >> myCodedLeaData.at(row).time2 >> myCodedLeaData.at(row).C1 >> myCodedLeaData.at(row).C2 >>
+                      myCodedLeaData.at(row).C3 >> myCodedLeaData.at(row).C4 >> myCodedLeaData.at(row).C5 >> myCodedLeaData.at(row).C6 >>
+                      myCodedLeaData.at(row).C7 >> myCodedLeaData.at(row).t >> myCodedLeaData.at(row).effects >> myCodedLeaData.at(row).formula >>
+                      myCodedLeaData.at(row).sort;
                       }
             }
 }
 
 void MainWindow::writeAsciiTable()
 {
-    for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+    for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
     {
     int column=0;
     if(myBinaryData==EMP)
     {
-         QString formulaNumberString=QString::number(myEmpData[row].formulaNumber);
-         QTableWidgetItem* item = new QTableWidgetItem(QString(formulaNumberString));
-         myDockRead->setTableItem(row,column,item);
+         QString formulaNumberString=QString::number(myEmpData.at(row).formulaNumber);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(formulaNumberString)));
          column++;
 
-         QString Wavelenght1String=QString::number(myEmpData[row].wavelenght1);
-         item = new QTableWidgetItem(QString(Wavelenght1String));
-         myDockRead->setTableItem(row,column,item);
+         QString Wavelenght1String=QString::number(myEmpData.at(row).wavelenght1);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Wavelenght1String)));
          column++;
 
-         QString Wavelenght2String = QString::number(myEmpData[row].wavelenght2);
-         item = new QTableWidgetItem(QString(Wavelenght2String));
-         myDockRead->setTableItem(row,column,item);
+         QString Wavelenght2String = QString::number(myEmpData.at(row).wavelenght2);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Wavelenght2String)));
          column++;
 
-         QString Time1String = QString::number(myEmpData[row].time1);
-         item = new QTableWidgetItem(QString(Time1String));
-         myDockRead->setTableItem(row,column,item);
+         QString Time1String = QString::number(myEmpData.at(row).time1);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Time1String)));
          column++;
 
-         QString Time2String = QString::number(myEmpData[row].time2);
-         item = new QTableWidgetItem(QString(Time2String));
-         myDockRead->setTableItem(row,column,item);
+         QString Time2String = QString::number(myEmpData.at(row).time2);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Time2String)));
          column++;
 
-         QString C1String = QString::number(myEmpData[row].CA);
-         item = new QTableWidgetItem(QString(C1String));
-         myDockRead->setTableItem(row,column,item);
+         QString C1String = QString::number(myEmpData.at(row).CA);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C1String)));
          column++;
 
-         QString C2String = QString::number(myEmpData[row].CB);
-         item = new QTableWidgetItem(QString(C2String));
-         myDockRead->setTableItem(row,column,item);
+         QString C2String = QString::number(myEmpData.at(row).CB);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C2String)));
          column++;
 
-         QString C3String = QString::number(myEmpData[row].CC);
-         item = new QTableWidgetItem(QString(C3String));
-         myDockRead->setTableItem(row,column,item);
+         QString C3String = QString::number(myEmpData.at(row).CC);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C3String)));
          column++;
 
-         QString C4String = QString::number(myEmpData[row].CE);
-         item = new QTableWidgetItem(QString(C4String));
-         myDockRead->setTableItem(row,column,item);
+         QString C4String = QString::number(myEmpData.at(row).CE);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C4String)));
          column++;
 
-         QString tString = QString::number(myEmpData[row].t);
-         item = new QTableWidgetItem(QString(tString));
-         myDockRead->setTableItem(row,column,item);
+         QString tString = QString::number(myEmpData.at(row).t);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(tString)));
          column++;
 
-         QString effectsString = QString::number(myEmpData[row].effects);
-         item = new QTableWidgetItem(QString(effectsString));
-         myDockRead->setTableItem(row,column,item);
+         QString effectsString = QString::number(myEmpData.at(row).effects);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(effectsString)));
          column++;
 
-         QString formulaString = QString::number(myEmpData[row].formula);
-         item = new QTableWidgetItem(QString(formulaString));
-         myDockRead->setTableItem(row,column,item);
+         QString formulaString = QString::number(myEmpData.at(row).formula);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(formulaString)));
          column++;
 
-         QString SortString = QString::number(myEmpData[row].sort);
-         item = new QTableWidgetItem(QString(SortString));
-         myDockRead->setTableItem(row,column,item);
+         QString SortString = QString::number(myEmpData.at(row).sort);
+         myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(SortString)));
         }
 
     else
         {
-        QString formulaNumberString=QString::number(myLeaData[row].formulaNumber);
-        QTableWidgetItem* item = new QTableWidgetItem(QString(formulaNumberString));
-        myDockRead->setTableItem(row,column,item);
+        QString formulaNumberString=QString::number(myLeaData.at(row).formulaNumber);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(formulaNumberString)));
         column++;
 
-        QString Wavelenght1String=QString::number(myLeaData[row].wavelenght1);
-        item = new QTableWidgetItem(QString(Wavelenght1String));
-        myDockRead->setTableItem(row,column,item);
+        QString Wavelenght1String=QString::number(myLeaData.at(row).wavelenght1);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Wavelenght1String)));
         column++;
 
-        QString Wavelenght2String = QString::number(myLeaData[row].wavelenght2);
-        item = new QTableWidgetItem(QString(Wavelenght2String));
-        myDockRead->setTableItem(row,column,item);
+        QString Wavelenght2String = QString::number(myLeaData.at(row).wavelenght2);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Wavelenght2String)));
         column++;
 
-        QString Time1String = QString::number(myLeaData[row].time1);
-        item = new QTableWidgetItem(QString(Time1String));
-        myDockRead->setTableItem(row,column,item);
+        QString Time1String = QString::number(myLeaData.at(row).time1);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Time1String)));
         column++;
 
-        QString Time2String = QString::number(myLeaData[row].time2);
-        item = new QTableWidgetItem(QString(Time2String));
-        myDockRead->setTableItem(row,column,item);
+        QString Time2String = QString::number(myLeaData.at(row).time2);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(Time2String)));
         column++;
 
-        QString C1String = QString::number(myLeaData[row].C1);
-        item = new QTableWidgetItem(QString(C1String));
-        myDockRead->setTableItem(row,column,item);
+        QString C1String = QString::number(myLeaData.at(row).C1);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C1String)));
         column++;
 
-        QString C2String = QString::number(myLeaData[row].C2);
-        item = new QTableWidgetItem(QString(C2String));
-        myDockRead->setTableItem(row,column,item);
+        QString C2String = QString::number(myLeaData.at(row).C2);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C2String)));
         column++;
 
-        QString C3String = QString::number(myLeaData[row].C3);
-        item = new QTableWidgetItem(QString(C3String));
-        myDockRead->setTableItem(row,column,item);
+        QString C3String = QString::number(myLeaData.at(row).C3);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C3String)));
         column++;
 
-        QString C4String = QString::number(myLeaData[row].C4);
-        item = new QTableWidgetItem(QString(C4String));
-        myDockRead->setTableItem(row,column,item);
+        QString C4String = QString::number(myLeaData.at(row).C4);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C4String)));
         column++;
 
-        QString C5String = QString::number(myLeaData[row].C5);
-        item = new QTableWidgetItem(QString(C5String));
-        myDockRead->setTableItem(row,column,item);
+        QString C5String = QString::number(myLeaData.at(row).C5);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C5String)));
         column++;
 
-        QString C6String = QString::number(myLeaData[row].C6);
-        item = new QTableWidgetItem(QString(C6String));
-        myDockRead->setTableItem(row,column,item);
+        QString C6String = QString::number(myLeaData.at(row).C6);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C6String)));
         column++;
 
-        QString C7String = QString::number(myLeaData[row].C7);
-        item = new QTableWidgetItem(QString(C7String));
-        myDockRead->setTableItem(row,column,item);
+        QString C7String = QString::number(myLeaData.at(row).C7);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(C7String)));
         column++;
 
-        QString tString = QString::number(myLeaData[row].t);
-        item = new QTableWidgetItem(QString(tString));
-        myDockRead->setTableItem(row,column,item);
+        QString tString = QString::number(myLeaData.at(row).t);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(tString)));
         column++;
 
-        QString effectsString = QString::number(myLeaData[row].effects);
-        item = new QTableWidgetItem(QString(effectsString));
-        myDockRead->setTableItem(row,column,item);
+        QString effectsString = QString::number(myLeaData.at(row).effects);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(effectsString)));
         column++;
 
-        QString formulaString = QString::number(myLeaData[row].formula);
-        item = new QTableWidgetItem(QString(formulaString));
-        myDockRead->setTableItem(row,column,item);
+        QString formulaString = QString::number(myLeaData.at(row).formula);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(formulaString)));
         column++;
 
-        QString SortString = QString::number(myLeaData[row].sort);
-        item = new QTableWidgetItem(QString(SortString));
-        myDockRead->setTableItem(row,column,item);
+        QString SortString = QString::number(myLeaData.at(row).sort);
+        myDockRead->setTableItem(row,column, new QTableWidgetItem(QString(SortString)));
         }
     }
       //inVLEFile.close();
@@ -504,161 +471,131 @@ void MainWindow::writeAsciiTable()
 
 void MainWindow::writeBinarytable()
 {
-for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
  {
     int column=0;
     if(myBinaryData==EMP)
     {
-           QString formulaNumberString=QString::number(myCodedEmpData[row].formulaNumber);
-           QTableWidgetItem *item = new QTableWidgetItem(QString(formulaNumberString));
-           ui->binaryTable->setItem(row,column,item);
+           QString formulaNumberString=QString::number(myCodedEmpData.at(row).formulaNumber);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(formulaNumberString)));
            column++;
 
-           QString Wavelength1String=QString::number(myCodedEmpData[row].wavelenght1);
-           item = new QTableWidgetItem(QString(Wavelength1String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Wavelength1String=QString::number(myCodedEmpData.at(row).wavelenght1);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Wavelength1String)));
            column++;
 
-           QString Wavelength2String=QString::number(myCodedEmpData[row].wavelenght2);
-           item = new QTableWidgetItem(QString(Wavelength2String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Wavelength2String=QString::number(myCodedEmpData.at(row).wavelenght2);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Wavelength2String)));
            column++;
 
-           QString Time1String=QString::number(myCodedEmpData[row].time1);
-           item = new QTableWidgetItem(QString(Time1String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Time1String=QString::number(myCodedEmpData.at(row).time1);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Time1String)));
            column++;
 
-           QString Time2String=QString::number(myCodedEmpData[row].time2);
-           item = new QTableWidgetItem(QString(Time2String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Time2String=QString::number(myCodedEmpData.at(row).time2);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Time2String)));
            column++;
 
-           QString C1String=QString::number(myCodedEmpData[row].CA);
-           item = new QTableWidgetItem(QString(C1String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C1String=QString::number(myCodedEmpData.at(row).CA);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C1String)));
            column++;
 
-           QString C2String=QString::number(myCodedEmpData[row].CB);
-           item = new QTableWidgetItem(QString(C2String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C2String=QString::number(myCodedEmpData.at(row).CB);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C2String)));
            column++;
 
-           QString C3String=QString::number(myCodedEmpData[row].CC);
-           item = new QTableWidgetItem(QString(C3String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C3String=QString::number(myCodedEmpData.at(row).CC);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C3String)));
            column++;
 
-           QString C4String=QString::number(myCodedEmpData[row].CE);
-           item = new QTableWidgetItem(QString(C4String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C4String=QString::number(myCodedEmpData.at(row).CE);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C4String)));
            column++;
 
-           QString tString=QString::number(myCodedEmpData[row].t);
-           item = new QTableWidgetItem(QString(tString));
-           ui->binaryTable->setItem(row,column,item);
+           QString tString=QString::number(myCodedEmpData.at(row).t);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(tString)));
            column++;
 
-           QString effectsString=QString::number(myCodedEmpData[row].effects);
-           item = new QTableWidgetItem(QString(effectsString));
-           ui->binaryTable->setItem(row,column,item);
+           QString effectsString=QString::number(myCodedEmpData.at(row).effects);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(effectsString)));
            column++;
 
-           QString formulaString=QString::number(myCodedEmpData[row].formula);
-           item = new QTableWidgetItem(QString(formulaString));
-           ui->binaryTable->setItem(row,column,item);
+           QString formulaString=QString::number(myCodedEmpData.at(row).formula);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(formulaString)));
            column++;
 
-           QString SortString=QString::number(myCodedEmpData[row].sort);
-           item = new QTableWidgetItem(QString(SortString));
-           ui->binaryTable->setItem(row,column,item);
+           QString SortString=QString::number(myCodedEmpData.at(row).sort);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(SortString)));
            column++;
           }
     else
-        {
-           QString formulaNumberString=QString::number(myCodedLeaData[row].formulaNumber);
-           QTableWidgetItem *item = new QTableWidgetItem(QString(formulaNumberString));
-           ui->binaryTable->setItem(row,column,item);
+          {
+           QString formulaNumberString=QString::number(myCodedLeaData.at(row).formulaNumber);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(formulaNumberString)));
            column++;
 
-           QString Wavelength1String=QString::number(myCodedLeaData[row].wavelenght1);
-           item = new QTableWidgetItem(QString(Wavelength1String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Wavelength1String=QString::number(myCodedLeaData.at(row).wavelenght1);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Wavelength1String)));
            column++;
 
-           QString Wavelength2String=QString::number(myCodedLeaData[row].wavelenght2);
-           item = new QTableWidgetItem(QString(Wavelength2String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Wavelength2String=QString::number(myCodedLeaData.at(row).wavelenght2);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Wavelength2String)));
            column++;
 
-           QString Time1String=QString::number(myCodedLeaData[row].time1);
-           item = new QTableWidgetItem(QString(Time1String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Time1String=QString::number(myCodedLeaData.at(row).time1);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Time1String)));
            column++;
 
-           QString Time2String=QString::number(myCodedLeaData[row].time2);
-           item = new QTableWidgetItem(QString(Time2String));
-           ui->binaryTable->setItem(row,column,item);
+           QString Time2String=QString::number(myCodedLeaData.at(row).time2);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(Time2String)));
            column++;
 
-           QString C1String=QString::number(myCodedLeaData[row].C1);
-           item = new QTableWidgetItem(QString(C1String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C1String=QString::number(myCodedLeaData.at(row).C1);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C1String)));
            column++;
 
-           QString C2String=QString::number(myCodedLeaData[row].C2);
-           item = new QTableWidgetItem(QString(C2String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C2String=QString::number(myCodedLeaData.at(row).C2);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C2String)));
            column++;
 
-           QString C3String=QString::number(myCodedLeaData[row].C3);
-           item = new QTableWidgetItem(QString(C3String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C3String=QString::number(myCodedLeaData.at(row).C3);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C3String)));
            column++;
 
-           QString C4String=QString::number(myCodedLeaData[row].C4);
-           item = new QTableWidgetItem(QString(C4String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C4String=QString::number(myCodedLeaData.at(row).C4);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C4String)));
            column++;
 
-           QString C5String=QString::number(myCodedLeaData[row].C5);
-           item = new QTableWidgetItem(QString(C5String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C5String=QString::number(myCodedLeaData.at(row).C5);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C5String)));
            column++;
 
-           QString C6String=QString::number(myCodedLeaData[row].C6);
-           item = new QTableWidgetItem(QString(C6String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C6String=QString::number(myCodedLeaData.at(row).C6);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C6String)));
            column++;
 
-           QString C7String=QString::number(myCodedLeaData[row].C7);
-           item = new QTableWidgetItem(QString(C7String));
-           ui->binaryTable->setItem(row,column,item);
+           QString C7String=QString::number(myCodedLeaData.at(row).C7);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(C7String)));
            column++;
 
-           QString tString=QString::number(myCodedLeaData[row].t);
-           item = new QTableWidgetItem(QString(tString));
-           ui->binaryTable->setItem(row,column,item);
+           QString tString=QString::number(myCodedLeaData.at(row).t);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(tString)));
            column++;
 
-           QString effectsString=QString::number(myCodedLeaData[row].effects);
-           item = new QTableWidgetItem(QString(effectsString));
-           ui->binaryTable->setItem(row,column,item);
+           QString effectsString=QString::number(myCodedLeaData.at(row).effects);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(effectsString)));
            column++;
 
-           QString formulaString=QString::number(myCodedLeaData[row].formula);
-           item = new QTableWidgetItem(QString(formulaString));
-           ui->binaryTable->setItem(row,column,item);
+           QString formulaString=QString::number(myCodedLeaData.at(row).formula);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(formulaString)));
            column++;
 
-           QString SortString=QString::number(myCodedLeaData[row].sort);
-           item = new QTableWidgetItem(QString(SortString));
-           ui->binaryTable->setItem(row,column,item);
+           QString SortString=QString::number(myCodedLeaData.at(row).sort);
+           ui->binaryTable->setItem(row,column, new QTableWidgetItem(QString(SortString)));
            column++;
           }
     }
 }
-
 
 void MainWindow::on_actionAggiorna_triggered()
 {
@@ -672,94 +609,22 @@ void MainWindow::on_actionAggiorna_triggered()
 
 void MainWindow::setDataHeader()
 {
-    ui->binaryTable->setRowCount(maxRow[int(myBinaryData)]);
+    ui->binaryTable->setRowCount(maxRow.at((int)myBinaryData));
 
-    QTableWidgetItem *item = new QTableWidgetItem("N");
-    ui->binaryTable->setHorizontalHeaderItem(0,item);
-    myDockRead->setTableHorizontalHeaderItem(0,item);
-    item = new QTableWidgetItem("λ1");
-    ui->binaryTable->setHorizontalHeaderItem(1,item);
-    myDockRead->setTableHorizontalHeaderItem(1,item);
-    item = new QTableWidgetItem("λ2");
-    ui->binaryTable->setHorizontalHeaderItem(2,item);
-    myDockRead->setTableHorizontalHeaderItem(2,item);
-    item = new QTableWidgetItem("t1");
-    ui->binaryTable->setHorizontalHeaderItem(3,item);
-    myDockRead->setTableHorizontalHeaderItem(3,item);
-    item = new QTableWidgetItem("t2");
-    ui->binaryTable->setHorizontalHeaderItem(4,item);
-    myDockRead->setTableHorizontalHeaderItem(4,item);
-
-  if(EMP_Table){
-    item = new QTableWidgetItem("CA");
-    ui->binaryTable->setHorizontalHeaderItem(5,item);
-    myDockRead->setTableHorizontalHeaderItem(5,item);
-    item = new QTableWidgetItem("CB");
-    ui->binaryTable->setHorizontalHeaderItem(6,item);
-    myDockRead->setTableHorizontalHeaderItem(6,item);
-    item = new QTableWidgetItem("CC");
-    ui->binaryTable->setHorizontalHeaderItem(7,item);
-    myDockRead->setTableHorizontalHeaderItem(7,item);
-    item = new QTableWidgetItem("CE");
-    ui->binaryTable->setHorizontalHeaderItem(8,item);
-    myDockRead->setTableHorizontalHeaderItem(8,item);
-    item = new QTableWidgetItem("t");
-    ui->binaryTable->setHorizontalHeaderItem(9,item);
-    myDockRead->setTableHorizontalHeaderItem(9,item);
-    item = new QTableWidgetItem("effetti");
-    ui->binaryTable->setHorizontalHeaderItem(10,item);
-    myDockRead->setTableHorizontalHeaderItem(10,item);
-    item = new QTableWidgetItem("formula");
-    ui->binaryTable->setHorizontalHeaderItem(11,item);
-    myDockRead->setTableHorizontalHeaderItem(11,item);
-    item = new QTableWidgetItem("tipo");
-    ui->binaryTable->setHorizontalHeaderItem(12,item);
-    myDockRead->setTableHorizontalHeaderItem(12,item);
-
-    item = new QTableWidgetItem("");
-    myDockRead->setTableHorizontalHeaderItem(13,item);
-    ui->binaryTable->setHorizontalHeaderItem(13,item);
-    myDockRead->setTableHorizontalHeaderItem(14,item);
-    ui->binaryTable->setHorizontalHeaderItem(14,item);
-    myDockRead->setTableHorizontalHeaderItem(15,item);
-    ui->binaryTable->setHorizontalHeaderItem(15,item);
-  }
-  else{
-    item = new QTableWidgetItem("C1");
-    ui->binaryTable->setHorizontalHeaderItem(5,item);
-    myDockRead->setTableHorizontalHeaderItem(5,item);
-    item = new QTableWidgetItem("C2");
-    ui->binaryTable->setHorizontalHeaderItem(6,item);
-    myDockRead->setTableHorizontalHeaderItem(6,item);
-    item = new QTableWidgetItem("C3");
-    ui->binaryTable->setHorizontalHeaderItem(7,item);
-    myDockRead->setTableHorizontalHeaderItem(7,item);
-    item = new QTableWidgetItem("C4");
-    ui->binaryTable->setHorizontalHeaderItem(8,item);
-    myDockRead->setTableHorizontalHeaderItem(8,item);
-    item = new QTableWidgetItem("C5");
-    ui->binaryTable->setHorizontalHeaderItem(9,item);
-    myDockRead->setTableHorizontalHeaderItem(9,item);
-    item = new QTableWidgetItem("C6");
-    ui->binaryTable->setHorizontalHeaderItem(10,item);
-    myDockRead->setTableHorizontalHeaderItem(10,item);
-    item = new QTableWidgetItem("C7");
-    ui->binaryTable->setHorizontalHeaderItem(11,item);
-    myDockRead->setTableHorizontalHeaderItem(11,item);
-    item = new QTableWidgetItem("t");
-    ui->binaryTable->setHorizontalHeaderItem(12,item);
-    myDockRead->setTableHorizontalHeaderItem(12,item);
-    item = new QTableWidgetItem("effetti");
-    ui->binaryTable->setHorizontalHeaderItem(13,item);
-    myDockRead->setTableHorizontalHeaderItem(13,item);
-    item = new QTableWidgetItem("formula");
-    ui->binaryTable->setHorizontalHeaderItem(14,item);
-    myDockRead->setTableHorizontalHeaderItem(14,item);
-    item = new QTableWidgetItem("tipo");
-    ui->binaryTable->setHorizontalHeaderItem(15,item);
-    myDockRead->setTableHorizontalHeaderItem(15,item);
+    QStringList m_TableHeader;
+    if(EMP_Table){
+    m_TableHeader<<"N"<<"λ1"<<"λ2"<<"t1"<<"t2"<<"CA"<<"CB"<<"CC"<<"CE"
+                <<"t"<<"Effetti"<<"Formula"<<"Tipo"<<""<<""<<"";
+    ui->binaryTable->setHorizontalHeaderLabels(m_TableHeader);
+    myDockRead->setTableHorizontalHeaderLabels(m_TableHeader);
     }
-
+    else
+    {
+    m_TableHeader<<"N"<<"λ1"<<"λ2"<<"t1"<<"t2"<<"C1"<<"C2"<<"C3"<<"C4"<<"C5"
+                    <<"C6"<<"C7"<<"t"<<"Effetti"<<"Formula"<<"Tipo"<<""<<""<<"";
+    ui->binaryTable->setHorizontalHeaderLabels(m_TableHeader);
+    myDockRead->setTableHorizontalHeaderLabels(m_TableHeader);
+    }
 }
 
 void MainWindow::on_actionEMP_toggled(bool arg1)
@@ -872,7 +737,8 @@ void MainWindow::printTables()
                 " <li>Esposizione radiante</li>"
                 " <li>Potenza</li>"
                 " <li>Energia</li>"
-            "</ol><br>"
+            "</ol>"
+           "<p>I risultati a cui corrispondono valori multipli non vengono considerati essendo gestiti dal software.</p><br>"
            "<table width=\"100%\">\n"
                        "<tr><td>N</td>\n"
                        "<td>&#955;<sub>1</sub></td>\n"
@@ -889,9 +755,8 @@ void MainWindow::printTables()
                        "<td>Effetti</td>\n"
                        "<td>Coefficiente</td>\n"
                        "<td>tipo</td></td></tr>\n";
-            }
-            else
-            {
+    }
+    else{
                 html += "<td>C<sub>1</sub></td>\n"
                         "<td>C<sub>2</sub></td>\n"
                         "<td>C<sub>3</sub></td>\n"
@@ -905,23 +770,23 @@ void MainWindow::printTables()
                         "<td>tipo</td></td></tr>\n";
             }
 
-for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
 {
     if(EMP_Table){
 
-     QString formulaNumberString=QString::number(myEmpData[row].formulaNumber);
-     QString Wavelenght1String=QString::number(myEmpData[row].wavelenght1);
-     QString Wavelenght2String=QString::number(myEmpData[row].wavelenght2);
-     QString Time1String=QString::number(myEmpData[row].time1);
-     QString Time2String=QString::number(myEmpData[row].time2);
-     QString CAString=QString::number(myEmpData[row].CA);
-     QString CBString=QString::number(myEmpData[row].CB);
-     QString CCString=QString::number(myEmpData[row].CC);
-     QString CEString=QString::number(myEmpData[row].CE);
-     QString tString=QString::number(myEmpData[row].t);
-     QString effects=QString::number(myEmpData[row].effects);
-     QString formulaString=QString::number(myEmpData[row].formula);
-     QString SortString=QString::number(myEmpData[row].sort);
+     QString formulaNumberString=QString::number(myEmpData.at(row).formulaNumber);
+     QString Wavelenght1String=QString::number(myEmpData.at(row).wavelenght1);
+     QString Wavelenght2String=QString::number(myEmpData.at(row).wavelenght2);
+     QString Time1String=QString::number(myEmpData.at(row).time1);
+     QString Time2String=QString::number(myEmpData.at(row).time2);
+     QString CAString=QString::number(myEmpData.at(row).CA);
+     QString CBString=QString::number(myEmpData.at(row).CB);
+     QString CCString=QString::number(myEmpData.at(row).CC);
+     QString CEString=QString::number(myEmpData.at(row).CE);
+     QString tString=QString::number(myEmpData.at(row).t);
+     QString effects=QString::number(myEmpData.at(row).effects);
+     QString formulaString=QString::number(myEmpData.at(row).formula);
+     QString SortString=QString::number(myEmpData.at(row).sort);
 
      html +=
           "<tr><td>" +formulaNumberString+ "</td>\n"
@@ -936,26 +801,24 @@ for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
           "<td>"+ tString +"</td>\n"
           "<td>"+ effects +"</td>\n"
           "<td>"+ formulaString +"</td>\n"
-          "<td>"+ SortString +"</td></td></tr>\n";
-     }
-            else
- {
-         QString formulaNumberString=QString::number(myLeaData[row].formulaNumber);
-         QString Wavelenght1String=QString::number(myLeaData[row].wavelenght1);
-         QString Wavelenght2String=QString::number(myLeaData[row].wavelenght2);
-         QString Time1String=QString::number(myLeaData[row].time1);
-         QString Time2String=QString::number(myLeaData[row].time2);
-         QString C1String=QString::number(myLeaData[row].C1);
-         QString C2String=QString::number(myLeaData[row].C2);
-         QString C3String=QString::number(myLeaData[row].C3);
-         QString C4String=QString::number(myLeaData[row].C4);
-         QString C5String=QString::number(myLeaData[row].C5);
-         QString C6String=QString::number(myLeaData[row].C6);
-         QString C7String=QString::number(myLeaData[row].C7);
-         QString tString=QString::number(myLeaData[row].t);
-         QString effects=QString::number(myLeaData[row].effects);
-         QString formulaString=QString::number(myLeaData[row].formula);
-         QString SortString=QString::number(myLeaData[row].sort);
+          "<td>"+ SortString +"</td></td></tr>\n";}
+    else{
+         QString formulaNumberString=QString::number(myLeaData.at(row).formulaNumber);
+         QString Wavelenght1String=QString::number(myLeaData.at(row).wavelenght1);
+         QString Wavelenght2String=QString::number(myLeaData.at(row).wavelenght2);
+         QString Time1String=QString::number(myLeaData.at(row).time1);
+         QString Time2String=QString::number(myLeaData.at(row).time2);
+         QString C1String=QString::number(myLeaData.at(row).C1);
+         QString C2String=QString::number(myLeaData.at(row).C2);
+         QString C3String=QString::number(myLeaData.at(row).C3);
+         QString C4String=QString::number(myLeaData.at(row).C4);
+         QString C5String=QString::number(myLeaData.at(row).C5);
+         QString C6String=QString::number(myLeaData.at(row).C6);
+         QString C7String=QString::number(myLeaData.at(row).C7);
+         QString tString=QString::number(myLeaData.at(row).t);
+         QString effects=QString::number(myLeaData.at(row).effects);
+         QString formulaString=QString::number(myLeaData.at(row).formula);
+         QString SortString=QString::number(myLeaData.at(row).sort);
 
                 html +=
                  "<tr><td>" +formulaNumberString+ "</td>\n"
@@ -973,8 +836,7 @@ for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
                  "<td>"+ tString +"</td>\n"
                  "<td>"+ effects +"</td>\n"
                  "<td>"+ formulaString +"</td>\n"
-                 "<td>"+ SortString +"</td></td></tr>\n";
-        }
+                 "<td>"+ SortString +"</td></td></tr>\n";}
 
     }
 
@@ -1013,22 +875,22 @@ for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
                         "<td>tipo</td></td></tr>\n";
             }
 
-for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
+for(int row = 0; row<maxRow.at((int)myBinaryData); row++)
   {
-  if(EMP_Table){
-        QString formulaNumberString=QString::number(myCodedEmpData[row].formulaNumber);
-        QString Wavelenght1String=QString::number(myCodedEmpData[row].wavelenght1);
-        QString Wavelenght2String=QString::number(myCodedEmpData[row].wavelenght2);
-        QString Time1String=QString::number(myCodedEmpData[row].time1);
-        QString Time2String=QString::number(myCodedEmpData[row].time2);
-        QString CAString=QString::number(myCodedEmpData[row].CA);
-        QString CBString=QString::number(myCodedEmpData[row].CB);
-        QString CCString=QString::number(myCodedEmpData[row].CC);
-        QString CEString=QString::number(myCodedEmpData[row].CE);
-        QString tString=QString::number(myCodedEmpData[row].t);
-        QString effects=QString::number(myCodedEmpData[row].effects);
-        QString formulaString=QString::number(myCodedEmpData[row].formula);
-        QString SortString=QString::number(myCodedEmpData[row].sort);
+    if(EMP_Table){
+        QString formulaNumberString=QString::number(myCodedEmpData.at(row).formulaNumber);
+        QString Wavelenght1String=QString::number(myCodedEmpData.at(row).wavelenght1);
+        QString Wavelenght2String=QString::number(myCodedEmpData.at(row).wavelenght2);
+        QString Time1String=QString::number(myCodedEmpData.at(row).time1);
+        QString Time2String=QString::number(myCodedEmpData.at(row).time2);
+        QString CAString=QString::number(myCodedEmpData.at(row).CA);
+        QString CBString=QString::number(myCodedEmpData.at(row).CB);
+        QString CCString=QString::number(myCodedEmpData.at(row).CC);
+        QString CEString=QString::number(myCodedEmpData.at(row).CE);
+        QString tString=QString::number(myCodedEmpData.at(row).t);
+        QString effects=QString::number(myCodedEmpData.at(row).effects);
+        QString formulaString=QString::number(myCodedEmpData.at(row).formula);
+        QString SortString=QString::number(myCodedEmpData.at(row).sort);
         html +=
              "<tr><td>" +formulaNumberString+ "</td>\n"
              "<td>"+ Wavelenght1String +"</td>\n"
@@ -1043,25 +905,25 @@ for(int row = 0; row<maxRow[int(myBinaryData)]; row++)
              "<td>"+ effects +"</td>\n"
              "<td>"+ formulaString +"</td>\n"
              "<td>"+ SortString +"</td></td></tr>\n";
-        }
-        else
-        {
-        QString formulaNumberString=QString::number(myCodedLeaData[row].formulaNumber);
-        QString Wavelenght1String=QString::number(myCodedLeaData[row].wavelenght1);
-        QString Wavelenght2String=QString::number(myCodedLeaData[row].wavelenght2);
-        QString Time1String=QString::number(myCodedLeaData[row].time1);
-        QString Time2String=QString::number(myCodedLeaData[row].time2);
-        QString C1String=QString::number(myCodedLeaData[row].C1);
-        QString C2String=QString::number(myCodedLeaData[row].C2);
-        QString C3String=QString::number(myCodedLeaData[row].C3);
-        QString C4String=QString::number(myCodedLeaData[row].C4);
-        QString C5String=QString::number(myCodedLeaData[row].C5);
-        QString C6String=QString::number(myCodedLeaData[row].C6);
-        QString C7String=QString::number(myCodedLeaData[row].C7);
-        QString tString=QString::number(myCodedLeaData[row].t);
-        QString effects=QString::number(myCodedLeaData[row].effects);
-        QString formulaString=QString::number(myCodedLeaData[row].formula);
-        QString SortString=QString::number(myCodedLeaData[row].sort);
+    }
+    else
+    {
+        QString formulaNumberString=QString::number(myCodedLeaData.at(row).formulaNumber);
+        QString Wavelenght1String=QString::number(myCodedLeaData.at(row).wavelenght1);
+        QString Wavelenght2String=QString::number(myCodedLeaData.at(row).wavelenght2);
+        QString Time1String=QString::number(myCodedLeaData.at(row).time1);
+        QString Time2String=QString::number(myCodedLeaData.at(row).time2);
+        QString C1String=QString::number(myCodedLeaData.at(row).C1);
+        QString C2String=QString::number(myCodedLeaData.at(row).C2);
+        QString C3String=QString::number(myCodedLeaData.at(row).C3);
+        QString C4String=QString::number(myCodedLeaData.at(row).C4);
+        QString C5String=QString::number(myCodedLeaData.at(row).C5);
+        QString C6String=QString::number(myCodedLeaData.at(row).C6);
+        QString C7String=QString::number(myCodedLeaData.at(row).C7);
+        QString tString=QString::number(myCodedLeaData.at(row).t);
+        QString effects=QString::number(myCodedLeaData.at(row).effects);
+        QString formulaString=QString::number(myCodedLeaData.at(row).formula);
+        QString SortString=QString::number(myCodedLeaData.at(row).sort);
 
                 html +=
                  "<tr><td>" +formulaNumberString+ "</td>\n"
@@ -1129,9 +991,8 @@ void MainWindow::on_actionNumero_di_righe_triggered()
     dialog.exec();
     if(dialog.result()==QDialog::Accepted)
      {
-      for(int row=0; row<maxRow[int(myBinaryData)]; row++)
-        maxRow[row]=dialog.getMaxRowArray()[row];
-
+       std::array<int, 4> myMaxRow=dialog.getMaxRowArray();
+       copy(myMaxRow.begin(), myMaxRow.end(), maxRow.begin());
        updateData();
      }
 }
@@ -1185,23 +1046,23 @@ QString html;
         myEMP_Print.writeEmpInStructValues();
         html=myEMP_Print.create_EMP_Table();
         }
-        else if(myBinaryData==CLASSE_1_1M)
+    else if(myBinaryData==CLASSE_1_1M)
         {
         classification=0;
         myLEA_Print.writeLeaInStructValues((classData)classification);
-        html=myLEA_Print.create_LEA_Table((classData)classification);
+        html=myLEA_Print.create_LEA_Table_1M();
         }
-        else if(myBinaryData==CLASSE_3R)
+    else if(myBinaryData==CLASSE_3R)
         {
         classification=2;
         myLEA_Print.writeLeaInStructValues((classData)classification);
-        html=myLEA_Print.create_LEA_Table((classData)classification);
+        html=myLEA_Print.create_LEA_Table_3R();
         }
-        else if(myBinaryData==CLASSE_3B)
+    else if(myBinaryData==CLASSE_3B)
         {
         classification=3;
         myLEA_Print.writeLeaInStructValues((classData)classification);
-        html=myLEA_Print.create_LEA_Table((classData)classification);
+        html=myLEA_Print.create_LEA_Table_3B();
     }
 
     QTextDocument document;
@@ -1250,20 +1111,22 @@ void MainWindow::on_actionSalva_fiel_binario_triggered()
     out.setVersion(QDataStream::Qt_4_3);
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
-    for(int row=0; row<maxRow[int(myBinaryData)]; row++) {
+
+    for(int row = 0; row<(maxRow.at((int)myBinaryData)); row++)
+    {
         if(EMP_Table){
-            out << myEmpData[row].formulaNumber << myEmpData[row].wavelenght1 << myEmpData[row].wavelenght2
-                << myEmpData[row].time1 << myEmpData[row].time2 << myEmpData[row].CA << myEmpData[row].CB
-                << myEmpData[row].CC << myEmpData[row].CE << myEmpData[row].t << myEmpData[row].effects
-                << myEmpData[row].formula << myEmpData[row].sort;
+            out << myEmpData.at(row).formulaNumber << myEmpData.at(row).wavelenght1 << myEmpData.at(row).wavelenght2
+                << myEmpData.at(row).time1 << myEmpData.at(row).time2 << myEmpData.at(row).CA << myEmpData.at(row).CB
+                << myEmpData.at(row).CC << myEmpData.at(row).CE << myEmpData.at(row).t << myEmpData.at(row).effects
+                << myEmpData.at(row).formula << myEmpData.at(row).sort;
                 }
         else
         {
-            out << myLeaData[row].formulaNumber << myLeaData[row].wavelenght1 << myLeaData[row].wavelenght2
-                << myLeaData[row].time1 << myLeaData[row].time2 << myLeaData[row].C1 << myLeaData[row].C2
-                << myLeaData[row].C3 << myLeaData[row].C4 << myLeaData[row].C5 << myLeaData[row].C6
-                << myLeaData[row].C7 << myLeaData[row].t << myLeaData[row].effects << myLeaData[row].formula
-                << myLeaData[row].sort;
+            out << myLeaData.at(row).formulaNumber << myLeaData.at(row).wavelenght1 << myLeaData.at(row).wavelenght2
+                << myLeaData.at(row).time1 << myLeaData.at(row).time2 << myLeaData.at(row).C1 << myLeaData.at(row).C2
+                << myLeaData.at(row).C3 << myLeaData.at(row).C4 << myLeaData.at(row).C5 << myLeaData.at(row).C6
+                << myLeaData.at(row).C7 << myLeaData.at(row).t << myLeaData.at(row).effects << myLeaData.at(row).formula
+                << myLeaData.at(row).sort;
                }
           }
       QApplication::restoreOverrideCursor();
@@ -1285,4 +1148,9 @@ QString MainWindow::adjustHeader()
         header="Classe 3R";
 
     return header;
+}
+
+void MainWindow::on_actionEsci_triggered()
+{
+    this->close();
 }

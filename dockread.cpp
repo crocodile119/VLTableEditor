@@ -39,13 +39,12 @@ void DockRead::setTableColumnCount(int column)
     ui->asciiDataTable->setColumnCount(column);
 }
 
-void DockRead::setTableHorizontalHeaderItem(int column, QTableWidgetItem* item)
+void DockRead::setTableHorizontalHeaderLabels(const QStringList &labels)
 {
-    ui->asciiDataTable->takeHorizontalHeaderItem(column);
-    ui->asciiDataTable->setHorizontalHeaderItem(column,item);
+    ui->asciiDataTable->setHorizontalHeaderLabels(labels);
 }
 
-void DockRead::setLabel(QString label)
+void DockRead::setLabel(const QString &label)
 {
     ui->label->setText(label);
 }

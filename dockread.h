@@ -27,8 +27,8 @@ public:
     void setTableItem(int, int, QTableWidgetItem*);
     void setTableRowCount(int row);
     void setTableColumnCount(int column);
-    void setTableHorizontalHeaderItem(int, QTableWidgetItem*);
-    void setLabel(QString);
+    void setTableHorizontalHeaderLabels(const QStringList &);
+    void setLabel(const QString &);
     QString getLabel();
 
 private:

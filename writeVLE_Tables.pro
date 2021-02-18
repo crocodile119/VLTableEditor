@@ -9,6 +9,7 @@ QT       += printsupport
 RC_ICONS = ico.ico
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += c++20
 TARGET = writeVLE_Tables
 TEMPLATE = app
 

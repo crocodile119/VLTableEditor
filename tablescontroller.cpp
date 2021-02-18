@@ -10,26 +10,40 @@ TablesController *TablesController::getInstance()
 
         return singleton;
 }
-TablesController::TablesController()
+TablesController::TablesController():myEmpLeaTables(new EmpLeaTables)
 {
 }
 // Releases the singleton instance of this controller.
 
 void TablesController::destroy() {
 
-           if (singleton != 0) {
+           if (singleton != nullptr) {
                delete singleton;
-               singleton= 0;
+               singleton= nullptr;
            }
 
 }
 
-leadata* TablesController::writeLeaInStructValues(classData myClassData)
+std::array<leadata, EmpLeaTables::TABLEROW_1_1M>TablesController::writeLeaInStructValues_1_1M()
 {
-    return myEmpLeaTables->writeLeaValues(myClassData);
+    myEmpLeaTables->writeLeaValues_1_1M();
+    return myEmpLeaTables->getLeaData_1_1M();
 }
 
-empdata* TablesController::writeEmpInStructValues()
+std::array<leadata, EmpLeaTables::TABLEROW_3R>TablesController::writeLeaInStructValues_3R()
 {
-    return myEmpLeaTables->writeEmpValues();
+    myEmpLeaTables->writeLeaValues_3R();
+    return myEmpLeaTables->getLeaData_3R();
+}
+
+std::array<leadata, EmpLeaTables::TABLEROW_3B>TablesController::writeLeaInStructValues_3B()
+{
+    myEmpLeaTables->writeLeaValues_3B();
+    return myEmpLeaTables->getLeaData_3B();
+}
+
+std::array<empdata, EmpLeaTables::TABLEROW_EMP> TablesController::writeEmpInStructValues()
+{
+    myEmpLeaTables->writeEmpValues();
+    return myEmpLeaTables->getEmpData();
 }

@@ -4,24 +4,31 @@
 #include "leadata.h"
 #include "empdata.h"
 #include <QtGui>
+#include <array>
 
 class EmpLeaTables
 {
 public:
+    const static QString HTML_HEADER;
+
+    enum tableRows{TABLEROW_1_1M=41, TABLEROW_3R=38, TABLEROW_3B=21, TABLEROW_EMP=70};
+    enum typeOfOutput{UV=1, VIS=2, IRA=3, IRA_2=4, VIS_2=5, VIS_3=6, IRA_IRB=7};  
+
     EmpLeaTables();
-    ~EmpLeaTables();
-    empdata* writeEmpValues();
-    leadata* writeLeaValues(classData);
-    empdata* getEmpData();
-    leadata* getLeaData_1_1M();
-    leadata* getLeaData_3R();
-    leadata* getLeaData_3B();
+    void writeEmpValues();
+    void writeLeaValues_1_1M();
+    void writeLeaValues_3R();
+    void writeLeaValues_3B();
+    std::array<empdata, TABLEROW_EMP> getEmpData();
+    std::array<leadata, TABLEROW_1_1M> getLeaData_1_1M();
+    std::array<leadata, TABLEROW_3R> getLeaData_3R();
+    std::array<leadata, TABLEROW_3B> getLeaData_3B();
 
 private:
-    empdata* empValues;
-    leadata *leaValues_1_1M;
-    leadata *leaValues_3R;
-    leadata *leaValues_3B;
+    std::array<empdata, TABLEROW_EMP> empValues;
+    std::array<leadata, TABLEROW_1_1M> leaValues_1_1M;
+    std::array<leadata, TABLEROW_3R> leaValues_3R;
+    std::array<leadata, TABLEROW_3B> leaValues_3B;
 };
 
 #endif // EMPLEATABLES_H

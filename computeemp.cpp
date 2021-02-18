@@ -1,6 +1,6 @@
 #include "computeemp.h"
 #include "empdata.h"
-#include <ctype.h>
+#include <cctype>
 #include <cstdlib>
 #include <sstream>
 #include <cmath>
@@ -9,19 +9,20 @@
 #include <QDataStream>
 #include <iostream>
 #include <cmath>
+#include <array>
+#include <algorithm>
 #include "tablescontroller.h"
 
 using namespace std;
-
 	
-ComputeEMP::ComputeEMP()
+ComputeEMP::ComputeEMP(): empStructValues{}, EMP_Result(0), EMP_FormulaSort(0), myEmpData{},
+    CA(0),CB(0), CC(0), CE(0), T1(0), T2(0), photoGamma(0)
 {
     /*********************************************************************************
     * Con il singleton sono certo che vi sarà un'unica istanza della classe LeaTable *
     * anche instanziando più oggetti di tipo ComputeLEA                              *
     **********************************************************************************/
 
-    empStructValues=new empdata[70];
     empStructValues=TablesController::getInstance()->writeEmpInStructValues();
 }
 
@@ -32,7 +33,7 @@ void ComputeEMP::writeEmpInStructValues()
 
 QString ComputeEMP::create_EMP_Table()
 {
-    int maxIndex=70;
+    int maxIndex=EmpLeaTables::TABLEROW_EMP;
     QString myFormula;
     QString myFormulaTipo;
     QString myFormulaUnit;
@@ -46,41 +47,7 @@ QString ComputeEMP::create_EMP_Table()
     QString myEyeDamage;
     QString mySkinDamage;
 
-
-    html="<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
-        "<html>\n"
-        "<head>\n"
-        "<meta content=\"text/html; charset=ISO-8859-1\"\n"
-        "http-equiv=\"content-type\">\n"
-        "<title>Laser Report</title>\n"
-            "<style>"
-                 "h1, h2, h3, h4 {\n"
-                 "font-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif;\n"
-                 "}\n"
-                 "table, th, td {\n"
-                 "font-family: \"Trebuchet MS\", Arial, Helvetica, sans-serif;\n"
-                 "font-size: large;\n"
-                 "border-width: 1px;\n"
-                 "border-color: #dddddd;\n"
-                 "border-collapse: collapse;\n"
-                 "text-align: left;\n"
-                 "}\n"
-                 "th {\n"
-                 "padding-top: 12px;\n"
-                 "padding-bottom: 12px;\n"
-                 "text-align: left;\n"
-                 "background-color: #00c800;\n"
-                 "color: #fafafa;\n"
-                 "}\n"
-                 "td, th {\n"
-                 "padding: 8px;\n"
-                 "}\n"
-            "</style>\n"
-         "</head>\n"
-         "<body>\n"
-         "<br>\n";
-
-    html +="<h2>Tabella EMP occhi</h2>\n"
+    html +=EmpLeaTables::HTML_HEADER+"<h2>Tabella EMP occhi</h2>\n"
            "<table width=\"100%\">\n"
                        "<td>N</td>\n"
                        "<td>&lambda;<sub>1</sub></td>\n"
@@ -91,24 +58,21 @@ QString ComputeEMP::create_EMP_Table()
 
     for(int index=0; index<maxIndex; index++)
     {
+    wavelength1=QString::number(empStructValues.at(index).wavelenght1);
+    wavelength2=QString::number(empStructValues.at(index).wavelenght2);
+    time1=QString::number(empStructValues.at(index).time1);
+    time2=QString::number(empStructValues.at(index).time2);
 
-    int myRow=index+1;
-    QString row=QString::number(myRow);
-    wavelength1=QString::number(empStructValues[index].wavelenght1);
-    wavelength2=QString::number(empStructValues[index].wavelenght2);
-    time1=QString::number(empStructValues[index].time1);
-    time2=QString::number(empStructValues[index].time2);
+    myFormula=QString::fromStdString(valuateFormula(empStructValues.at(index)));
+    myFormulaTipo=QString::fromStdString(valuateFormulaTipo(empStructValues.at(index)));
+    myFormulaUnit=QString::fromStdString(valuateFormulaUnit(empStructValues.at(index)));
 
-    myFormula=QString::fromStdString(valuateFormula(empStructValues[index]));
-    myFormulaTipo=QString::fromStdString(valuateFormulaTipo(empStructValues[index]));
-    myFormulaUnit=QString::fromStdString(valuateFormulaUnit(empStructValues[index]));
-
-    myRadiation=typeOfRadiation(empStructValues[index].effects);
-    myEyeDamage=typeOfEyeDamage(empStructValues[index].effects);
-    mySkinDamage=typeOfSkinDamage(empStructValues[index].effects);
+    myRadiation=typeOfRadiation(empStructValues.at(index).effects);
+    myEyeDamage=typeOfEyeDamage(empStructValues.at(index).effects);
+    mySkinDamage=typeOfSkinDamage(empStructValues.at(index).effects);
 
     html +=
-    "<tr><td>"+ row +"</td>\n"
+    "<tr><td>"+ formulaNumber +"</td>\n"
     "<td>"+ wavelength1 +"</td>\n"
     "<td>"+ wavelength2 +"</td>\n"
     "<td>"+ time1 +"</td>\n"
@@ -148,34 +112,34 @@ string ComputeEMP::valuateFormula(const empdata & myEmpData)
 
     if (myEmpData.sort==0)
          Tipo="E";
-      else if (myEmpData.sort==1)
+    else if (myEmpData.sort==1)
           Tipo="H";
 
     if (myEmpData.CA==0)
      tabCA = "";
-  else
+    else
       tabCA = " C<sub>A</sub>";
 
-  if (myEmpData.CB==0)
+    if (myEmpData.CB==0)
      tabCB="";
-  else
+    else
       tabCB=" C<sub>B</sub>";
 
-  if (myEmpData.CC==0)
+    if (myEmpData.CC==0)
      tabCC="";
-  else
+    else
       tabCC=" C<sub>C</sub>";
 
-  if (myEmpData.CE==0)
+    if (myEmpData.CE==0)
      tabCE="";
-  else
+    else
       tabCE=" C<sub>E</sub>";
 
-  if (myEmpData.t==1)
+    if (myEmpData.t==1)
       tabt=" t<sup>0,75</sup>";
-  else if (myEmpData.t==2)
+    else if (myEmpData.t==2)
       tabt=" t<sup>0,25</sup>";
-  else
+    else
      tabt="";
  
  // Double to string conversion, the C++03 way:
@@ -194,7 +158,7 @@ string ComputeEMP::valuateFormulaTipo(const empdata & myEmpData)
 
     if (myEmpData.sort==0)
          Tipo="E";
-      else
+    else
          Tipo="H";
 
     return Tipo;
@@ -206,7 +170,7 @@ string ComputeEMP::valuateFormulaUnit(const empdata & myEmpData)
 
     if (myEmpData.sort==0)
          FormulaUnit="W/m<sup>2</sup>";
-      else
+    else
          FormulaUnit="J/m<sup>2</sup>";
 
     return FormulaUnit;
@@ -215,34 +179,33 @@ string ComputeEMP::valuateFormulaUnit(const empdata & myEmpData)
 QString ComputeEMP::typeOfSkinDamage(const int &_effects)
 {
     QString mySkinDamage;
-    switch (_effects)
+    switch ((EmpLeaTables::typeOfOutput)_effects)
         {
-        case 1:
+        case EmpLeaTables::UV:
         mySkinDamage="eritema;";
         break;
 
-        case 2:
-        mySkinDamage="danno termico";
-
-        break;
-
-        case 3:
+        case EmpLeaTables::VIS:
         mySkinDamage="danno termico";
         break;
 
-        case 4:
+        case EmpLeaTables::IRA:
         mySkinDamage="danno termico";
         break;
 
-        case 5:
+        case EmpLeaTables::IRA_2:
         mySkinDamage="danno termico";
         break;
 
-        case 6:
+        case EmpLeaTables::VIS_2:
         mySkinDamage="danno termico";
         break;
 
-        case 7:
+        case EmpLeaTables::VIS_3:
+        mySkinDamage="danno termico";
+        break;
+
+        case EmpLeaTables::IRA_IRB:
         mySkinDamage="danno termico";
         break;
 
@@ -256,33 +219,33 @@ QString ComputeEMP::typeOfSkinDamage(const int &_effects)
 QString ComputeEMP::typeOfEyeDamage(const int &_effects)
 {
     QString myEyeDamage;
-        switch (_effects)
+        switch ((EmpLeaTables::typeOfOutput)_effects)
         {
-        case 1:
+        case EmpLeaTables::UV:
         myEyeDamage="danno fotochimico e danno termico;";
         break;
 
-        case 2:
+        case EmpLeaTables::VIS:
         myEyeDamage="retina";
         break;
 
-        case 3:
+        case EmpLeaTables::IRA:
         myEyeDamage="retina";
         break;
 
-        case 4:
+        case EmpLeaTables::IRA_2:
         myEyeDamage="danno termico";
         break;
 
-        case 5:
+        case EmpLeaTables::VIS_2:
         myEyeDamage="retina, danno forochimico e danno termico";
         break;
 
-        case 6:
+        case EmpLeaTables::VIS_3:
         myEyeDamage="retina";
         break;
 
-        case 7:
+        case EmpLeaTables::IRA_IRB:
         myEyeDamage="danno termico";
         break;
 
@@ -296,33 +259,33 @@ QString ComputeEMP::typeOfEyeDamage(const int &_effects)
 QString ComputeEMP::typeOfRadiation(const int & _effects)
 {
     QString myRadiation;
-        switch (_effects)
+        switch ((EmpLeaTables::typeOfOutput)_effects)
         {
-        case 1:
+        case EmpLeaTables::UV:
         myRadiation="UV";
         break;
 
-        case 2:
+        case EmpLeaTables::VIS:
         myRadiation="Visibile";
         break;
 
-        case 3:
+        case EmpLeaTables::IRA:
         myRadiation="IRA";
         break;
 
-        case 4:
+        case EmpLeaTables::IRA_2:
         myRadiation="IRB";
         break;
 
-        case 5:
+        case EmpLeaTables::VIS_2:
         myRadiation="visibile";
         break;
 
-        case 6:
+        case EmpLeaTables::VIS_3:
         myRadiation="visibile";
         break;
 
-        case 7:
+        case EmpLeaTables::IRA_IRB:
         myRadiation="IRB, IRC";
         break;
 
@@ -331,9 +294,4 @@ QString ComputeEMP::typeOfRadiation(const int & _effects)
         break;
         }
     return myRadiation;
-}
-
-ComputeEMP::~ComputeEMP()
-{
-    delete empStructValues;
 }

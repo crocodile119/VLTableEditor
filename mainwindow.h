@@ -70,19 +70,21 @@ private slots:
 
     QString adjustHeader();
 
+    void on_actionEsci_triggered();
+
 private:
     Ui::MainWindow *ui;
     double wavelength;
     double time;
     enum binaryData{EMP, CLASSE_1_1M, CLASSE_3R, CLASSE_3B};
     binaryData myBinaryData;
-    int maxRow[4]={70, 41, 38, 21};
+    std::array<int, 4>maxRow={70, 41, 38, 21};
     bool EMP_Table;
     QString html;
-    leadata myLeaData[70];
-    empdata myEmpData[70];
-    leadata myCodedLeaData[70];
-    empdata myCodedEmpData[70];
+    std::array<leadata,70>myLeaData;
+    std::array<empdata, 70> myEmpData;
+    std::array<leadata,70> myCodedLeaData;
+    std::array<empdata, 70> myCodedEmpData;
     ComputeLEA myLEA_Print;
     ComputeEMP myEMP_Print;
 

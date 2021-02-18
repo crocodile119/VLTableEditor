@@ -11,7 +11,6 @@ class ComputeLEA
 {
 public:
     ComputeLEA();
-    ~ComputeLEA();
 	string getRadiation() const;
 	string getSkinDamage() const;
     string getEyeDamage() const;
@@ -22,18 +21,19 @@ public:
     string valuateFormulaTipo(leadata &);
     string valuateFormulaUnit(leadata &);
 
-    QString create_LEA_Table(classData);
+    QString create_LEA_Table_1M();
+    QString create_LEA_Table_3R();
+    QString create_LEA_Table_3B();
+
     QString typeOfEyeDamage(const int&);
     QString typeOfRadiation(const int&);
     QString typeOfSkinDamage(const int&);
 
 private:
     int n_lea=4;
-    leadata* leaStructValues_1M;
-    leadata* leaStructValues_3R;
-    leadata* leaStructValues_3B;
-
-    EmpLeaTables* myEmpleaTables;
+    std::array<leadata, EmpLeaTables::TABLEROW_1_1M> leaStructValues_1M;
+    std::array<leadata, EmpLeaTables::TABLEROW_3R>leaStructValues_3R;
+    std::array<leadata, EmpLeaTables::TABLEROW_3B>leaStructValues_3B;
 
     string *LEA_Formula;
     int *LEA_FormulaSort;

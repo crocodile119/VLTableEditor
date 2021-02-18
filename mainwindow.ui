@@ -43,41 +43,11 @@
        <enum>Qt::DotLine</enum>
       </property>
       <property name="rowCount">
-       <number>100</number>
+       <number>70</number>
       </property>
       <property name="columnCount">
        <number>16</number>
       </property>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
       <row/>
       <row/>
       <row/>
@@ -218,6 +188,8 @@
     </widget>
     <addaction name="actionSalva_fiel_binario"/>
     <addaction name="menuEsporta"/>
+    <addaction name="separator"/>
+    <addaction name="actionEsci"/>
    </widget>
    <widget class="QMenu" name="menuAiuto">
     <property name="title">
@@ -415,6 +387,11 @@
    </property>
    <property name="text">
     <string>Salva fiel binario</string>
+   </property>
+  </action>
+  <action name="actionEsci">
+   <property name="text">
+    <string>Esci</string>
    </property>
   </action>
  </widget>

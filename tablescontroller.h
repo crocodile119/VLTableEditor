@@ -12,8 +12,10 @@ public:
 
     //Distrugge l'istanza del singleton
     static void destroy();
-    leadata* writeLeaInStructValues(classData);
-    empdata* writeEmpInStructValues();
+    std::array<leadata, EmpLeaTables::TABLEROW_1_1M>  writeLeaInStructValues_1_1M();
+    std::array<leadata, EmpLeaTables::TABLEROW_3R> writeLeaInStructValues_3R();
+    std::array<leadata, EmpLeaTables::TABLEROW_3B> writeLeaInStructValues_3B();
+    std::array<empdata, EmpLeaTables::TABLEROW_EMP> writeEmpInStructValues();
 
 private:
 
